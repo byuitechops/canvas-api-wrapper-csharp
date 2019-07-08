@@ -1,0 +1,973 @@
+<!--_https://canvas.instructure.com/doc/api/all_resources.html_as_of_July_8,_2019_-->
+<!-- Use this as your reference for what methods are required to support the entire Canvas API -->
+
+<table id="quicklinks">
+    <tbody>
+        <tr>
+            <th>API_Token_Scopes</th>
+            <td><a href="#method.scopes_api.index">List_scopes</a></td>
+        </tr>
+        <tr>
+            <th>Account_Domain_Lookups</th>
+            <td><a href="#method.account_domain_lookups.search">Search_account_domains</a></td>
+        </tr>
+        <tr>
+            <th>Account_Notifications</th>
+            <td><a href="#method.account_notifications.user_index">Index_of_active_global_notification_for_the_user</a>
+                <a href="#method.account_notifications.show">Show_a_global_notification</a>
+                <a href="#method.account_notifications.user_close_notification">Close_notification_for_user</a>
+                <a href="#method.account_notifications.create">Create_a_global_notification</a>
+                <a href="#method.account_notifications.update">Update_a_global_notification</a></td>
+        </tr>
+        <tr>
+            <th>Account_Reports</th>
+            <td><a href="#method.account_reports.available_reports">List_Available_Reports</a>
+                <a href="#method.account_reports.create">Start_a_Report</a>
+                <a href="#method.account_reports.index">Index_of_Reports</a>
+                <a href="#method.account_reports.show">Status_of_a_Report</a>
+                <a href="#method.account_reports.destroy">Delete_a_Report</a></td>
+        </tr>
+        <tr>
+            <th>Accounts</th>
+            <td><a href="#method.accounts.index">List_accounts</a>
+                <a href="#method.accounts.course_accounts">List_accounts_for_course_admins</a>
+                <a href="#method.accounts.show">Get_a_single_account</a>
+                <a href="#method.accounts.permissions">Permissions</a>
+                <a href="#method.accounts.sub_accounts">Get_the_sub-accounts_of_an_account</a>
+                <a href="#method.accounts.terms_of_service">Get_the_Terms_of_Service</a>
+                <a href="#method.accounts.help_links">Get_help_links</a>
+                <a href="#method.accounts.courses_api">List_active_courses_in_an_account</a>
+                <a href="#method.accounts.update">Update_an_account</a>
+                <a href="#method.accounts.remove_user">Delete_a_user_from_the_root_account</a></td>
+        </tr>
+        <tr>
+            <th>Subaccounts</th>
+            <td><a href="#method.sub_accounts.create">Create_a_new_sub-account</a>
+                <a href="#method.sub_accounts.destroy">Delete_a_sub-account</a></td>
+        </tr>
+        <tr>
+            <th>Admins</th>
+            <td><a href="#method.admins.create">Make_an_account_admin</a>
+                <a href="#method.admins.destroy">Remove_account_admin</a>
+                <a href="#method.admins.index">List_account_admins</a></td>
+        </tr>
+        <tr>
+            <th>Analytics</th>
+            <td><a href="#method.analytics_api.department_participation">Get_department-level_participation_data</a>
+                <a href="#method.analytics_api.department_grades">Get_department-level_grade_data</a>
+                <a href="#method.analytics_api.department_statistics">Get_department-level_statistics</a>
+                <a href="#method.analytics_api.course_participation">Get_course-level_participation_data</a>
+                <a href="#method.analytics_api.course_assignments">Get_course-level_assignment_data</a>
+                <a href="#method.analytics_api.course_student_summaries">Get_course-level_student_summary_data</a>
+                <a
+                    href="#method.analytics_api.student_in_course_participation">Get_user-in-a-course-level_participation_data</a>
+                <a
+                    href="#method.analytics_api.student_in_course_assignments">Get_user-in-a-course-level_assignment_data</a>
+                <a
+                    href="#method.analytics_api.student_in_course_messaging">Get_user-in-a-course-level_messaging_data</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Announcement_External_Feeds</th>
+            <td><a href="#method.external_feeds.index">List_external_feeds</a>
+                <a href="#method.external_feeds.create">Create_an_external_feed</a>
+                <a href="#method.external_feeds.destroy">Delete_an_external_feed</a></td>
+        </tr>
+        <tr>
+            <th>Announcements</th>
+            <td><a href="#method.announcements_api.index">List_announcements</a></td>
+        </tr>
+        <tr>
+            <th>Appointment_Groups</th>
+            <td><a href="#method.appointment_groups.index">List_appointment_groups</a>
+                <a href="#method.appointment_groups.create">Create_an_appointment_group</a>
+                <a href="#method.appointment_groups.show">Get_a_single_appointment_group</a>
+                <a href="#method.appointment_groups.update">Update_an_appointment_group</a>
+                <a href="#method.appointment_groups.destroy">Delete_an_appointment_group</a>
+                <a href="#method.appointment_groups.users">List_user_participants</a>
+                <a href="#method.appointment_groups.groups">List_student_group_participants</a>
+                <a href="#method.appointment_groups.next_appointment">Get_next_appointment</a></td>
+        </tr>
+        <tr>
+            <th>Assignment_Extensions</th>
+            <td><a href="#method.assignment_extensions.create">Set_extensions_for_student_assignment_submissions</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Assignment_Groups</th>
+            <td><a href="#method.assignment_groups.index">List_assignment_groups</a>
+                <a href="#method.assignment_groups_api.show">Get_an_Assignment_Group</a>
+                <a href="#method.assignment_groups_api.create">Create_an_Assignment_Group</a>
+                <a href="#method.assignment_groups_api.update">Edit_an_Assignment_Group</a>
+                <a href="#method.assignment_groups_api.destroy">Destroy_an_Assignment_Group</a></td>
+        </tr>
+        <tr>
+            <th>Assignments</th>
+            <td><a href="#method.assignments.destroy">Delete_an_assignment</a>
+                <a href="#method.assignments_api.index">List_assignments</a>
+                <a href="#method.assignments_api.user_index">List_assignments_for_user</a>
+                <a href="#method.assignments_api.show">Get_a_single_assignment</a>
+                <a href="#method.assignments_api.create">Create_an_assignment</a>
+                <a href="#method.assignments_api.update">Edit_an_assignment</a></td>
+        </tr>
+        <tr>
+            <th>Assignment_Overrides</th>
+            <td><a href="#method.assignment_overrides.index">List_assignment_overrides</a>
+                <a href="#method.assignment_overrides.show">Get_a_single_assignment_override</a>
+                <a href="#method.assignment_overrides.group_alias">Redirect_to_the_assignment_override_for_a_group</a>
+                <a
+                    href="#method.assignment_overrides.section_alias">Redirect_to_the_assignment_override_for_a_section</a>
+                <a href="#method.assignment_overrides.create">Create_an_assignment_override</a>
+                <a href="#method.assignment_overrides.update">Update_an_assignment_override</a>
+                <a href="#method.assignment_overrides.destroy">Delete_an_assignment_override</a>
+                <a href="#method.assignment_overrides.batch_retrieve">Batch_retrieve_overrides_in_a_course</a>
+                <a href="#method.assignment_overrides.batch_create">Batch_create_overrides_in_a_course</a>
+                <a href="#method.assignment_overrides.batch_update">Batch_update_overrides_in_a_course</a></td>
+        </tr>
+        <tr>
+            <th>Authentication_Providers</th>
+            <td><a href="#method.authentication_providers.index">List_authentication_providers</a>
+                <a href="#method.authentication_providers.create">Add_authentication_provider</a>
+                <a href="#method.authentication_providers.update">Update_authentication_provider</a>
+                <a href="#method.authentication_providers.show">Get_authentication_provider</a>
+                <a href="#method.authentication_providers.destroy">Delete_authentication_provider</a>
+                <a href="#method.authentication_providers.show_sso_settings">show_account_auth_settings</a>
+                <a href="#method.authentication_providers.update_sso_settings">update_account_auth_settings</a></td>
+        </tr>
+        <tr>
+            <th>Authentications_Log</th>
+            <td><a href="#method.authentication_audit_api.for_login">Query_by_login.</a>
+                <a href="#method.authentication_audit_api.for_account">Query_by_account.</a>
+                <a href="#method.authentication_audit_api.for_user">Query_by_user.</a></td>
+        </tr>
+        <tr>
+            <th>Blueprint_Management</th>
+            <td><a href="#method.master_courses/master_templates.show">Get_blueprint_information</a>
+                <a
+                    href="#method.master_courses/master_templates.associated_courses">Get_associated_course_information</a>
+                <a href="#method.master_courses/master_templates.update_associations">Update_associated_courses</a>
+                <a
+                    href="#method.master_courses/master_templates.queue_migration">Begin_a_migration_to_push_to_associated_courses</a>
+                <a
+                    href="#method.master_courses/master_templates.restrict_item">Set_or_remove_restrictions_on_a_blueprint_course_object</a>
+                <a href="#method.master_courses/master_templates.unsynced_changes">Get_unsynced_changes</a></td>
+        </tr>
+        <tr>
+            <th>Blueprint_Course_History</th>
+            <td><a href="#method.master_courses/master_templates.migrations_index">List_blueprint_migrations</a>
+                <a href="#method.master_courses/master_templates.migrations_show">Show_a_blueprint_migration</a>
+                <a href="#method.master_courses/master_templates.migration_details">Get_migration_details</a></td>
+        </tr>
+        <tr>
+            <th>Associated_Course_History</th>
+            <td><a href="#method.master_courses/master_templates.subscriptions_index">List_blueprint_subscriptions</a>
+                <a href="#method.master_courses/master_templates.imports_index">List_blueprint_imports</a>
+                <a href="#method.master_courses/master_templates.imports_show">Show_a_blueprint_import</a>
+                <a href="#method.master_courses/master_templates.import_details">Get_import_details</a></td>
+        </tr>
+        <tr>
+            <th>Bookmarks</th>
+            <td><a href="#method.bookmarks/bookmarks.index">List_bookmarks</a>
+                <a href="#method.bookmarks/bookmarks.create">Create_bookmark</a>
+                <a href="#method.bookmarks/bookmarks.show">Get_bookmark</a>
+                <a href="#method.bookmarks/bookmarks.update">Update_bookmark</a>
+                <a href="#method.bookmarks/bookmarks.destroy">Delete_bookmark</a></td>
+        </tr>
+        <tr>
+            <th>Brand_Configs</th>
+            <td><a
+                    href="#method.brand_configs_api.show">Get_the_brand_config_variables_that_should_be_used_for_this_domain</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Calendar_Events</th>
+            <td><a href="#method.calendar_events_api.index">List_calendar_events</a>
+                <a href="#method.calendar_events_api.user_index">List_calendar_events_for_a_user</a>
+                <a href="#method.calendar_events_api.create">Create_a_calendar_event</a>
+                <a href="#method.calendar_events_api.show">Get_a_single_calendar_event_or_assignment</a>
+                <a href="#method.calendar_events_api.reserve">Reserve_a_time_slot</a>
+                <a href="#method.calendar_events_api.update">Update_a_calendar_event</a>
+                <a href="#method.calendar_events_api.destroy">Delete_a_calendar_event</a>
+                <a href="#method.calendar_events_api.set_course_timetable">Set_a_course_timetable</a>
+                <a href="#method.calendar_events_api.get_course_timetable">Get_course_timetable</a>
+                <a
+                    href="#method.calendar_events_api.set_course_timetable_events">Create_or_update_events_directly_for_a_course_timetable</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Collaborations</th>
+            <td><a href="#method.collaborations.api_index">List_collaborations</a>
+                <a href="#method.collaborations.members">List_members_of_a_collaboration.</a>
+                <a href="#method.collaborations.potential_collaborators">List_potential_members</a></td>
+        </tr>
+        <tr>
+            <th>CommMessages</th>
+            <td><a href="#method.comm_messages_api.index">List_of_CommMessages_for_a_user</a></td>
+        </tr>
+        <tr>
+            <th>Communication_Channels</th>
+            <td><a href="#method.communication_channels.index">List_user_communication_channels</a>
+                <a href="#method.communication_channels.create">Create_a_communication_channel</a>
+                <a href="#method.communication_channels.destroy">Delete_a_communication_channel</a>
+                <a href="#method.communication_channels.delete_push_token">Delete_a_push_notification_endpoint</a></td>
+        </tr>
+        <tr>
+            <th>Conferences</th>
+            <td><a href="#method.conferences.index">List_conferences</a></td>
+        </tr>
+        <tr>
+            <th>Content_Exports</th>
+            <td><a href="#method.content_exports_api.index">List_content_exports</a>
+                <a href="#method.content_exports_api.show">Show_content_export</a>
+                <a href="#method.content_exports_api.create">Export_content</a></td>
+        </tr>
+        <tr>
+            <th>Migration_Issues</th>
+            <td><a href="#method.migration_issues.index">List_migration_issues</a>
+                <a href="#method.migration_issues.show">Get_a_migration_issue</a>
+                <a href="#method.migration_issues.update">Update_a_migration_issue</a></td>
+        </tr>
+        <tr>
+            <th>Content_Migrations</th>
+            <td><a href="#method.content_migrations.index">List_content_migrations</a>
+                <a href="#method.content_migrations.show">Get_a_content_migration</a>
+                <a href="#method.content_migrations.create">Create_a_content_migration</a>
+                <a href="#method.content_migrations.update">Update_a_content_migration</a>
+                <a href="#method.content_migrations.available_migrators">List_Migration_Systems</a>
+                <a href="#method.content_migrations.content_list">List_items_for_selective_import</a></td>
+        </tr>
+        <tr>
+            <th>Content_Security_Policy_Settings</th>
+            <td><a href="#method.csp_settings.get_csp_settings">Get_current_settings_for_account_or_course</a>
+                <a href="#method.csp_settings.set_csp_setting">Enable,_disable,_or_clear_explicit_CSP_setting</a>
+                <a
+                    href="#method.csp_settings.set_csp_lock">Lock_or_unlock_current_CSP_settings_for_sub-accounts_and_courses</a>
+                <a href="#method.csp_settings.add_domain">Add_a_domain_to_account_whitelist</a>
+                <a href="#method.csp_settings.add_multiple_domains">Add_multiple_domains_to_account_whitelist</a>
+                <a href="#method.csp_settings.csp_log">Retrieve_reported_CSP_Violations_for_account</a>
+                <a href="#method.csp_settings.remove_domain">Remove_a_domain_from_account_whitelist</a></td>
+        </tr>
+        <tr>
+            <th>Conversations</th>
+            <td><a href="#method.conversations.index">List_conversations</a>
+                <a href="#method.conversations.create">Create_a_conversation</a>
+                <a href="#method.conversations.batches">Get_running_batches</a>
+                <a href="#method.conversations.show">Get_a_single_conversation</a>
+                <a href="#method.conversations.update">Edit_a_conversation</a>
+                <a href="#method.conversations.mark_all_as_read">Mark_all_as_read</a>
+                <a href="#method.conversations.destroy">Delete_a_conversation</a>
+                <a href="#method.conversations.add_recipients">Add_recipients</a>
+                <a href="#method.conversations.add_message">Add_a_message</a>
+                <a href="#method.conversations.remove_messages">Delete_a_message</a>
+                <a href="#method.conversations.batch_update">Batch_update_conversations</a>
+                <a href="#method.conversations.find_recipients">Find_recipients</a>
+                <a href="#method.conversations.unread_count">Unread_count</a></td>
+        </tr>
+        <tr>
+            <th>Course_Audit_log</th>
+            <td><a href="#method.course_audit_api.for_course">Query_by_course.</a></td>
+        </tr>
+        <tr>
+            <th>Course_Quiz_Extensions</th>
+            <td><a href="#method.quizzes/course_quiz_extensions.create">Set_extensions_for_student_quiz_submissions</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Courses</th>
+            <td><a href="#method.courses.index">List_your_courses</a>
+                <a href="#method.courses.user_index">List_courses_for_a_user</a>
+                <a href="#method.courses.create">Create_a_new_course</a>
+                <a href="#method.courses.create_file">Upload_a_file</a>
+                <a href="#method.courses.students">List_students</a>
+                <a href="#method.courses.users">List_users_in_course</a>
+                <a href="#method.courses.recent_students">List_recently_logged_in_students</a>
+                <a href="#method.courses.user">Get_single_user</a>
+                <a href="#method.courses.preview_html">Preview_processed_html</a>
+                <a href="#method.courses.activity_stream">Course_activity_stream</a>
+                <a href="#method.courses.activity_stream_summary">Course_activity_stream_summary</a>
+                <a href="#method.courses.todo_items">Course_TODO_items</a>
+                <a href="#method.courses.destroy">Delete/Conclude_a_course</a>
+                <a href="#method.courses.api_settings">Get_course_settings</a>
+                <a href="#method.courses.update_settings">Update_course_settings</a>
+                <a href="#method.courses.show">Get_a_single_course</a>
+                <a href="#method.courses.update">Update_a_course</a>
+                <a href="#method.courses.batch_update">Update_courses</a>
+                <a href="#method.courses.reset_content">Reset_a_course</a>
+                <a href="#method.courses.effective_due_dates">Get_effective_due_dates</a>
+                <a href="#method.courses.permissions">Permissions</a>
+                <a href="#method.content_imports.copy_course_status">Get_course_copy_status</a>
+                <a href="#method.content_imports.copy_course_content">Copy_course_content</a></td>
+        </tr>
+        <tr>
+            <th>Custom_Gradebook_Columns</th>
+            <td><a href="#method.custom_gradebook_columns_api.index">List_custom_gradebook_columns</a>
+                <a href="#method.custom_gradebook_columns_api.create">Create_a_custom_gradebook_column</a>
+                <a href="#method.custom_gradebook_columns_api.update">Update_a_custom_gradebook_column</a>
+                <a href="#method.custom_gradebook_columns_api.destroy">Delete_a_custom_gradebook_column</a>
+                <a href="#method.custom_gradebook_columns_api.reorder">Reorder_custom_columns</a></td>
+        </tr>
+        <tr>
+            <th>Custom_Gradebook_Column_Data</th>
+            <td><a href="#method.custom_gradebook_column_data_api.index">List_entries_for_a_column</a>
+                <a href="#method.custom_gradebook_column_data_api.update">Update_column_data</a>
+                <a href="#method.custom_gradebook_column_data_api.bulk_update">Bulk_update_column_data</a></td>
+        </tr>
+        <tr>
+            <th>Discussion_Topics</th>
+            <td><a href="#method.discussion_topics.index">List_discussion_topics</a>
+                <a href="#method.discussion_topics.create">Create_a_new_discussion_topic</a>
+                <a href="#method.discussion_topics.update">Update_a_topic</a>
+                <a href="#method.discussion_topics.destroy">Delete_a_topic</a>
+                <a href="#method.discussion_topics.reorder">Reorder_pinned_topics</a>
+                <a href="#method.discussion_entries.update">Update_an_entry</a>
+                <a href="#method.discussion_entries.destroy">Delete_an_entry</a>
+                <a href="#method.discussion_topics_api.show">Get_a_single_topic</a>
+                <a href="#method.discussion_topics_api.view">Get_the_full_topic</a>
+                <a href="#method.discussion_topics_api.add_entry">Post_an_entry</a>
+                <a href="#method.discussion_topics_api.entries">List_topic_entries</a>
+                <a href="#method.discussion_topics_api.add_reply">Post_a_reply</a>
+                <a href="#method.discussion_topics_api.replies">List_entry_replies</a>
+                <a href="#method.discussion_topics_api.entry_list">List_entries</a>
+                <a href="#method.discussion_topics_api.mark_topic_read">Mark_topic_as_read</a>
+                <a href="#method.discussion_topics_api.mark_topic_unread">Mark_topic_as_unread</a>
+                <a href="#method.discussion_topics_api.mark_all_read">Mark_all_entries_as_read</a>
+                <a href="#method.discussion_topics_api.mark_all_unread">Mark_all_entries_as_unread</a>
+                <a href="#method.discussion_topics_api.mark_entry_read">Mark_entry_as_read</a>
+                <a href="#method.discussion_topics_api.mark_entry_unread">Mark_entry_as_unread</a>
+                <a href="#method.discussion_topics_api.rate_entry">Rate_entry</a>
+                <a href="#method.discussion_topics_api.subscribe_topic">Subscribe_to_a_topic</a>
+                <a href="#method.discussion_topics_api.unsubscribe_topic">Unsubscribe_from_a_topic</a></td>
+        </tr>
+        <tr>
+            <th>Enrollment_Terms</th>
+            <td><a href="#method.terms.create">Create_enrollment_term</a>
+                <a href="#method.terms.update">Update_enrollment_term</a>
+                <a href="#method.terms.destroy">Delete_enrollment_term</a>
+                <a href="#method.terms_api.index">List_enrollment_terms</a></td>
+        </tr>
+        <tr>
+            <th>Enrollments</th>
+            <td><a href="#method.enrollments_api.index">List_enrollments</a>
+                <a href="#method.enrollments_api.show">Enrollment_by_ID</a>
+                <a href="#method.enrollments_api.create">Enroll_a_user</a>
+                <a href="#method.enrollments_api.destroy">Conclude,_deactivate,_or_delete_an_enrollment</a>
+                <a href="#method.enrollments_api.accept">Accept_Course_Invitation</a>
+                <a href="#method.enrollments_api.reject">Reject_Course_Invitation</a>
+                <a href="#method.enrollments_api.reactivate">Re-activate_an_enrollment</a>
+                <a
+                    href="#method.enrollments_api.last_attended">Adds_last_attended_date_to_student_enrollment_in_course</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Error_Reports</th>
+            <td><a href="#method.errors.create">Create_Error_Report</a></td>
+        </tr>
+        <tr>
+            <th>External_Tools</th>
+            <td><a href="#method.external_tools.index">List_external_tools</a>
+                <a
+                    href="#method.external_tools.generate_sessionless_launch">Get_a_sessionless_launch_url_for_an_external_tool.</a>
+                <a href="#method.external_tools.show">Get_a_single_external_tool</a>
+                <a href="#method.external_tools.create">Create_an_external_tool</a>
+                <a href="#method.external_tools.update">Edit_an_external_tool</a>
+                <a href="#method.external_tools.destroy">Delete_an_external_tool</a></td>
+        </tr>
+        <tr>
+            <th>Favorites</th>
+            <td><a href="#method.favorites.list_favorite_courses">List_favorite_courses</a>
+                <a href="#method.favorites.list_favorite_groups">List_favorite_groups</a>
+                <a href="#method.favorites.add_favorite_course">Add_course_to_favorites</a>
+                <a href="#method.favorites.add_favorite_groups">Add_group_to_favorites</a>
+                <a href="#method.favorites.remove_favorite_course">Remove_course_from_favorites</a>
+                <a href="#method.favorites.remove_favorite_groups">Remove_group_from_favorites</a>
+                <a href="#method.favorites.reset_course_favorites">Reset_course_favorites</a>
+                <a href="#method.favorites.reset_groups_favorites">Reset_group_favorites</a></td>
+        </tr>
+        <tr>
+            <th>Feature_Flags</th>
+            <td><a href="#method.feature_flags.index">List_features</a>
+                <a href="#method.feature_flags.enabled_features">List_enabled_features</a>
+                <a href="#method.feature_flags.show">Get_feature_flag</a>
+                <a href="#method.feature_flags.update">Set_feature_flag</a>
+                <a href="#method.feature_flags.delete">Remove_feature_flag</a></td>
+        </tr>
+        <tr>
+            <th>Files</th>
+            <td><a href="#method.files.api_quota">Get_quota_information</a>
+                <a href="#method.files.api_index">List_files</a>
+                <a href="#method.files.public_url">Get_public_inline_preview_url</a>
+                <a href="#method.files.api_show">Get_file</a>
+                <a href="#method.files.api_update">Update_file</a>
+                <a href="#method.files.destroy">Delete_file</a></td>
+        </tr>
+        <tr>
+            <th>Folders</th>
+            <td><a href="#method.folders.api_index">List_folders</a>
+                <a href="#method.folders.list_all_folders">List_all_folders</a>
+                <a href="#method.folders.resolve_path">Resolve_path</a>
+                <a href="#method.folders.show">Get_folder</a>
+                <a href="#method.folders.update">Update_folder</a>
+                <a href="#method.folders.create">Create_folder</a>
+                <a href="#method.folders.api_destroy">Delete_folder</a>
+                <a href="#method.folders.create_file">Upload_a_file</a>
+                <a href="#method.folders.copy_file">Copy_a_file</a>
+                <a href="#method.folders.copy_folder">Copy_a_folder</a>
+                <a href="#method.folders.media_folder">Get_uploaded_media_folder_for_user</a></td>
+        </tr>
+        <tr>
+            <th>Usage_Rights</th>
+            <td><a href="#method.usage_rights.set_usage_rights">Set_usage_rights</a>
+                <a href="#method.usage_rights.remove_usage_rights">Remove_usage_rights</a>
+                <a href="#method.usage_rights.licenses">List_licenses</a></td>
+        </tr>
+        <tr>
+            <th>Grade_Change_Log</th>
+            <td><a href="#method.grade_change_audit_api.for_assignment">Query_by_assignment.</a>
+                <a href="#method.grade_change_audit_api.for_course">Query_by_course.</a>
+                <a href="#method.grade_change_audit_api.for_student">Query_by_student.</a>
+                <a href="#method.grade_change_audit_api.for_grader">Query_by_grader.</a></td>
+        </tr>
+        <tr>
+            <th>Gradebook_History</th>
+            <td><a href="#method.gradebook_history_api.days">Days_in_gradebook_history_for_this_course</a>
+                <a
+                    href="#method.gradebook_history_api.day_details">Details_for_a_given_date_in_gradebook_history_for_this_course</a>
+                <a href="#method.gradebook_history_api.submissions">Lists_submissions</a>
+                <a href="#method.gradebook_history_api.feed">List_uncollated_submission_versions</a></td>
+        </tr>
+        <tr>
+            <th>Grading_Periods</th>
+            <td><a href="#method.grading_periods.index">List_grading_periods</a>
+                <a href="#method.grading_periods.show">Get_a_single_grading_period</a>
+                <a href="#method.grading_periods.update">Update_a_single_grading_period</a>
+                <a href="#method.grading_periods.destroy">Delete_a_grading_period</a></td>
+        </tr>
+        <tr>
+            <th>Grading_Standards</th>
+            <td><a href="#method.grading_standards_api.create">Create_a_new_grading_standard</a>
+                <a
+                    href="#method.grading_standards_api.context_index">List_the_grading_standards_available_in_a_context.</a>
+                <a href="#method.grading_standards_api.context_show">Get_a_single_grading_standard_in_a_context.</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Group_Categories</th>
+            <td><a href="#method.group_categories.index">List_group_categories_for_a_context</a>
+                <a href="#method.group_categories.show">Get_a_single_group_category</a>
+                <a href="#method.group_categories.create">Create_a_Group_Category</a>
+                <a href="#method.group_categories.update">Update_a_Group_Category</a>
+                <a href="#method.group_categories.destroy">Delete_a_Group_Category</a>
+                <a href="#method.group_categories.groups">List_groups_in_group_category</a>
+                <a href="#method.group_categories.users">List_users_in_group_category</a>
+                <a href="#method.group_categories.assign_unassigned_members">Assign_unassigned_members</a></td>
+        </tr>
+        <tr>
+            <th>Groups</th>
+            <td><a href="#method.groups.index">List_your_groups</a>
+                <a href="#method.groups.context_index">List_the_groups_available_in_a_context.</a>
+                <a href="#method.groups.show">Get_a_single_group</a>
+                <a href="#method.groups.create">Create_a_group</a>
+                <a href="#method.groups.update">Edit_a_group</a>
+                <a href="#method.groups.destroy">Delete_a_group</a>
+                <a href="#method.groups.users">List_group's_users</a>
+                <a href="#method.groups.create_file">Upload_a_file</a>
+                <a href="#method.groups.preview_html">Preview_processed_html</a>
+                <a href="#method.groups.activity_stream">Group_activity_stream</a>
+                <a href="#method.groups.activity_stream_summary">Group_activity_stream_summary</a>
+                <a href="#method.groups.permissions">Permissions</a></td>
+        </tr>
+        <tr>
+            <th>Group_Memberships</th>
+            <td><a href="#method.groups.invite">Invite_others_to_a_group</a>
+                <a href="#method.group_memberships.index">List_group_memberships</a>
+                <a href="#method.group_memberships.show">Get_a_single_group_membership</a>
+                <a href="#method.group_memberships.create">Create_a_membership</a>
+                <a href="#method.group_memberships.update">Update_a_membership</a>
+                <a href="#method.group_memberships.destroy">Leave_a_group</a></td>
+        </tr>
+        <tr>
+            <th>Image_Search</th>
+            <td><a href="#method.internet_image.image_search">Find_images</a>
+                <a href="#method.internet_image.image_selection">Confirm_image_selection</a></td>
+        </tr>
+        <tr>
+            <th>JWTs</th>
+            <td><a href="#method.jwts.create">Create_JWT</a>
+                <a href="#method.jwts.refresh">Refresh_JWT</a></td>
+        </tr>
+        <tr>
+            <th>Late_Policy</th>
+            <td><a href="#method.late_policy.show">Get_a_late_policy</a>
+                <a href="#method.late_policy.create">Create_a_late_policy</a>
+                <a href="#method.late_policy.update">Patch_a_late_policy</a></td>
+        </tr>
+        <tr>
+            <th>Line_Items</th>
+            <td><a href="#method.lti/ims/line_items.create">Create_a_Line_Item</a>
+                <a href="#method.lti/ims/line_items.update">Update_a_Line_Item</a>
+                <a href="#method.lti/ims/line_items.show">Show_a_Line_Item</a>
+                <a href="#method.lti/ims/line_items.index">List_line_Items</a>
+                <a href="#method.lti/ims/line_items.destroy">Delete_a_Line_Item</a></td>
+        </tr>
+        <tr>
+            <th>LiveAssessments</th>
+            <td><a href="#method.live_assessments/results.create">Create_live_assessment_results</a>
+                <a href="#method.live_assessments/results.index">List_live_assessment_results</a>
+                <a href="#method.live_assessments/assessments.create">Create_or_find_a_live_assessment</a>
+                <a href="#method.live_assessments/assessments.index">List_live_assessments</a></td>
+        </tr>
+        <tr>
+            <th>Logins</th>
+            <td><a href="#method.pseudonyms.index">List_user_logins</a>
+                <a href="#method.pseudonyms.create">Create_a_user_login</a>
+                <a href="#method.pseudonyms.update">Edit_a_user_login</a>
+                <a href="#method.pseudonyms.destroy">Delete_a_user_login</a></td>
+        </tr>
+        <tr>
+            <th>Moderation_Set</th>
+            <td><a href="#method.moderation_set.index">List_students_selected_for_moderation</a>
+                <a href="#method.moderation_set.create">Select_students_for_moderation</a></td>
+        </tr>
+        <tr>
+            <th>Provisional_Grades</th>
+            <td><a href="#method.provisional_grades.bulk_select">Bulk_select_provisional_grades</a>
+                <a href="#method.provisional_grades.status">Show_provisional_grade_status_for_a_student</a>
+                <a href="#method.provisional_grades.select">Select_provisional_grade</a>
+                <a href="#method.provisional_grades.publish">Publish_provisional_grades_for_an_assignment</a></td>
+        </tr>
+        <tr>
+            <th>Anonymous_Provisional_Grades</th>
+            <td><a href="#method.anonymous_provisional_grades.status">Show_provisional_grade_status_for_a_student</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Modules</th>
+            <td><a href="#method.context_modules_api.index">List_modules</a>
+                <a href="#method.context_modules_api.show">Show_module</a>
+                <a href="#method.context_modules_api.create">Create_a_module</a>
+                <a href="#method.context_modules_api.update">Update_a_module</a>
+                <a href="#method.context_modules_api.destroy">Delete_module</a>
+                <a href="#method.context_modules_api.relock">Re-lock_module_progressions</a></td>
+        </tr>
+        <tr>
+            <th>Module_Items</th>
+            <td><a href="#method.context_module_items_api.index">List_module_items</a>
+                <a href="#method.context_module_items_api.show">Show_module_item</a>
+                <a href="#method.context_module_items_api.create">Create_a_module_item</a>
+                <a href="#method.context_module_items_api.update">Update_a_module_item</a>
+                <a href="#method.context_module_items_api.select_mastery_path">Select_a_mastery_path</a>
+                <a href="#method.context_module_items_api.destroy">Delete_module_item</a>
+                <a href="#method.context_module_items_api.mark_as_done">Mark_module_item_as_done/not_done</a>
+                <a href="#method.context_module_items_api.item_sequence">Get_module_item_sequence</a>
+                <a href="#method.context_module_items_api.mark_item_read">Mark_module_item_read</a></td>
+        </tr>
+        <tr>
+            <th>Notification_Preferences</th>
+            <td><a href="#method.notification_preferences.index">List_preferences</a>
+                <a href="#method.notification_preferences.category_index">List_of_preference_categories</a>
+                <a href="#method.notification_preferences.show">Get_a_preference</a>
+                <a href="#method.notification_preferences.update">Update_a_preference</a>
+                <a
+                    href="#method.notification_preferences.update_preferences_by_category">Update_preferences_by_category</a>
+                <a href="#method.notification_preferences.update_all">Update_multiple_preferences</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Originality_Reports</th>
+            <td><a href="#method.lti/originality_reports_api.create">Create_an_Originality_Report</a>
+                <a href="#method.lti/originality_reports_api.update">Edit_an_Originality_Report</a>
+                <a href="#method.lti/originality_reports_api.show">Show_an_Originality_Report</a></td>
+        </tr>
+        <tr>
+            <th>Outcome_Groups</th>
+            <td><a href="#method.outcome_groups_api.redirect">Redirect_to_root_outcome_group_for_context</a>
+                <a href="#method.outcome_groups_api.index">Get_all_outcome_groups_for_context</a>
+                <a href="#method.outcome_groups_api.link_index">Get_all_outcome_links_for_context</a>
+                <a href="#method.outcome_groups_api.show">Show_an_outcome_group</a>
+                <a href="#method.outcome_groups_api.update">Update_an_outcome_group</a>
+                <a href="#method.outcome_groups_api.destroy">Delete_an_outcome_group</a>
+                <a href="#method.outcome_groups_api.outcomes">List_linked_outcomes</a>
+                <a href="#method.outcome_groups_api.link">Create/link_an_outcome</a>
+                <a href="#method.outcome_groups_api.unlink">Unlink_an_outcome</a>
+                <a href="#method.outcome_groups_api.subgroups">List_subgroups</a>
+                <a href="#method.outcome_groups_api.create">Create_a_subgroup</a>
+                <a href="#method.outcome_groups_api.import">Import_an_outcome_group</a></td>
+        </tr>
+        <tr>
+            <th>Outcome_Imports</th>
+            <td><a href="#method.outcome_imports_api.create">Import_Outcomes</a>
+                <a href="#method.outcome_imports_api.show">Get_Outcome_import_status</a></td>
+        </tr>
+        <tr>
+            <th>Outcome_Results</th>
+            <td><a href="#method.outcome_results.index">Get_outcome_results</a>
+                <a href="#method.outcome_results.rollups">Get_outcome_result_rollups</a></td>
+        </tr>
+        <tr>
+            <th>Outcomes</th>
+            <td><a href="#method.outcomes_api.show">Show_an_outcome</a>
+                <a href="#method.outcomes_api.update">Update_an_outcome</a>
+                <a
+                    href="#method.outcomes_api.outcome_alignments">Get_aligned_assignments_for_an_outcome_in_a_course_for_a_particular_student</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Pages</th>
+            <td><a href="#method.wiki_pages_api.show_front_page">Show_front_page</a>
+                <a href="#method.wiki_pages_api.duplicate">Duplicate_page</a>
+                <a href="#method.wiki_pages_api.update_front_page">Update/create_front_page</a>
+                <a href="#method.wiki_pages_api.index">List_pages</a>
+                <a href="#method.wiki_pages_api.create">Create_page</a>
+                <a href="#method.wiki_pages_api.show">Show_page</a>
+                <a href="#method.wiki_pages_api.update">Update/create_page</a>
+                <a href="#method.wiki_pages_api.destroy">Delete_page</a>
+                <a href="#method.wiki_pages_api.revisions">List_revisions</a>
+                <a href="#method.wiki_pages_api.show_revision">Show_revision</a>
+                <a href="#method.wiki_pages_api.revert">Revert_to_revision</a></td>
+        </tr>
+        <tr>
+            <th>Peer_Reviews</th>
+            <td><a href="#method.peer_reviews_api.index">Get_all_Peer_Reviews</a>
+                <a href="#method.peer_reviews_api.create">Create_Peer_Review</a>
+                <a href="#method.peer_reviews_api.destroy">Delete_Peer_Review</a></td>
+        </tr>
+        <tr>
+            <th>Plagiarism_Detection_Platform_Assignments</th>
+            <td><a href="#method.lti/assignments_api.show">Get_a_single_assignment_(lti)</a></td>
+        </tr>
+        <tr>
+            <th>Plagiarism_Detection_Platform_Users</th>
+            <td><a href="#method.lti/users_api.show">Get_a_single_user_(lti)</a>
+                <a href="#method.lti/users_api.group_index">Get_all_users_in_a_group_(lti)</a></td>
+        </tr>
+        <tr>
+            <th>Plagiarism_Detection_Submissions</th>
+            <td><a href="#method.lti/submissions_api.show">Get_a_single_submission</a>
+                <a href="#method.lti/submissions_api.history">Get_the_history_of_a_single_submission</a></td>
+        </tr>
+        <tr>
+            <th>Planner</th>
+            <td><a href="#method.planner.index">List_planner_items</a></td>
+        </tr>
+        <tr>
+            <th>Planner_Notes</th>
+            <td><a href="#method.planner_notes.index">List_planner_notes</a>
+                <a href="#method.planner_notes.show">Show_a_planner_note</a>
+                <a href="#method.planner_notes.update">Update_a_planner_note</a>
+                <a href="#method.planner_notes.create">Create_a_planner_note</a>
+                <a href="#method.planner_notes.destroy">Delete_a_planner_note</a></td>
+        </tr>
+        <tr>
+            <th>Planner_Overrides</th>
+            <td><a href="#method.planner_overrides.index">List_planner_overrides</a>
+                <a href="#method.planner_overrides.show">Show_a_planner_override</a>
+                <a href="#method.planner_overrides.update">Update_a_planner_override</a>
+                <a href="#method.planner_overrides.create">Create_a_planner_override</a>
+                <a href="#method.planner_overrides.destroy">Delete_a_planner_override</a></td>
+        </tr>
+        <tr>
+            <th>Poll_Sessions</th>
+            <td><a href="#method.polling/poll_sessions.index">List_poll_sessions_for_a_poll</a>
+                <a href="#method.polling/poll_sessions.show">Get_the_results_for_a_single_poll_session</a>
+                <a href="#method.polling/poll_sessions.create">Create_a_single_poll_session</a>
+                <a href="#method.polling/poll_sessions.update">Update_a_single_poll_session</a>
+                <a href="#method.polling/poll_sessions.destroy">Delete_a_poll_session</a>
+                <a href="#method.polling/poll_sessions.open">Open_a_poll_session</a>
+                <a href="#method.polling/poll_sessions.close">Close_an_opened_poll_session</a>
+                <a href="#method.polling/poll_sessions.opened">List_opened_poll_sessions</a>
+                <a href="#method.polling/poll_sessions.closed">List_closed_poll_sessions</a></td>
+        </tr>
+        <tr>
+            <th>PollChoices</th>
+            <td><a href="#method.polling/poll_choices.index">List_poll_choices_in_a_poll</a>
+                <a href="#method.polling/poll_choices.show">Get_a_single_poll_choice</a>
+                <a href="#method.polling/poll_choices.create">Create_a_single_poll_choice</a>
+                <a href="#method.polling/poll_choices.update">Update_a_single_poll_choice</a>
+                <a href="#method.polling/poll_choices.destroy">Delete_a_poll_choice</a></td>
+        </tr>
+        <tr>
+            <th>PollSubmissions</th>
+            <td><a href="#method.polling/poll_submissions.show">Get_a_single_poll_submission</a>
+                <a href="#method.polling/poll_submissions.create">Create_a_single_poll_submission</a></td>
+        </tr>
+        <tr>
+            <th>Polls</th>
+            <td><a href="#method.polling/polls.index">List_polls</a>
+                <a href="#method.polling/polls.show">Get_a_single_poll</a>
+                <a href="#method.polling/polls.create">Create_a_single_poll</a>
+                <a href="#method.polling/polls.update">Update_a_single_poll</a>
+                <a href="#method.polling/polls.destroy">Delete_a_poll</a></td>
+        </tr>
+        <tr>
+            <th>Proficiency_Ratings</th>
+            <td><a href="#method.outcome_proficiency_api.create">Create/update_proficiency_ratings</a>
+                <a href="#method.outcome_proficiency_api.show">Get_proficiency_ratings</a></td>
+        </tr>
+        <tr>
+            <th>Progress</th>
+            <td><a href="#method.progress.show">Query_progress</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Assignment_Overrides</th>
+            <td><a
+                    href="#method.quizzes/quiz_assignment_overrides.index">Retrieve_assignment-overridden_dates_for_quizzes</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Quiz_Extensions</th>
+            <td><a href="#method.quizzes/quiz_extensions.create">Set_extensions_for_student_quiz_submissions</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_IP_Filters</th>
+            <td><a href="#method.quizzes/quiz_ip_filters.index">Get_available_quiz_IP_filters.</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Question_Groups</th>
+            <td><a href="#method.quizzes/quiz_groups.show">Get_a_single_quiz_group</a>
+                <a href="#method.quizzes/quiz_groups.create">Create_a_question_group</a>
+                <a href="#method.quizzes/quiz_groups.update">Update_a_question_group</a>
+                <a href="#method.quizzes/quiz_groups.destroy">Delete_a_question_group</a>
+                <a href="#method.quizzes/quiz_groups.reorder">Reorder_question_groups</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Questions</th>
+            <td><a href="#method.quizzes/quiz_questions.index">List_questions_in_a_quiz_or_a_submission</a>
+                <a href="#method.quizzes/quiz_questions.show">Get_a_single_quiz_question</a>
+                <a href="#method.quizzes/quiz_questions.create">Create_a_single_quiz_question</a>
+                <a href="#method.quizzes/quiz_questions.update">Update_an_existing_quiz_question</a>
+                <a href="#method.quizzes/quiz_questions.destroy">Delete_a_quiz_question</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Reports</th>
+            <td><a href="#method.quizzes/quiz_reports.index">Retrieve_all_quiz_reports</a>
+                <a href="#method.quizzes/quiz_reports.create">Create_a_quiz_report</a>
+                <a href="#method.quizzes/quiz_reports.show">Get_a_quiz_report</a>
+                <a
+                    href="#method.quizzes/quiz_reports.abort">Abort_the_generation_of_a_report,_or_remove_a_previously_generated_one</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Quiz_Statistics</th>
+            <td><a href="#method.quizzes/quiz_statistics.index">Fetching_the_latest_quiz_statistics</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Submission_Events</th>
+            <td><a href="#method.quizzes/quiz_submission_events_api.create">Submit_captured_events</a>
+                <a href="#method.quizzes/quiz_submission_events_api.index">Retrieve_captured_events</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Submission_Files</th>
+            <td><a href="#method.quizzes/quiz_submission_files.create">Upload_a_file</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Submission_Questions</th>
+            <td><a href="#method.quizzes/quiz_submission_questions.index">Get_all_quiz_submission_questions.</a>
+                <a href="#method.quizzes/quiz_submission_questions.answer">Answering_questions</a>
+                <a href="#method.quizzes/quiz_submission_questions.flag">Flagging_a_question.</a>
+                <a href="#method.quizzes/quiz_submission_questions.unflag">Unflagging_a_question.</a></td>
+        </tr>
+        <tr>
+            <th>Quiz_Submission_User_List</th>
+            <td><a
+                    href="#method.quizzes/quiz_submission_users.message">Send_a_message_to_unsubmitted_or_submitted_users_for_the_quiz</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Quiz_Submissions</th>
+            <td><a href="#method.quizzes/quiz_submissions_api.index">Get_all_quiz_submissions.</a>
+                <a href="#method.quizzes/quiz_submissions_api.submission">Get_the_quiz_submission.</a>
+                <a href="#method.quizzes/quiz_submissions_api.show">Get_a_single_quiz_submission.</a>
+                <a
+                    href="#method.quizzes/quiz_submissions_api.create">Create_the_quiz_submission_(start_a_quiz-taking_session)</a>
+                <a href="#method.quizzes/quiz_submissions_api.update">Update_student_question_scores_and_comments.</a>
+                <a href="#method.quizzes/quiz_submissions_api.complete">Complete_the_quiz_submission_(turn_it_in).</a>
+                <a href="#method.quizzes/quiz_submissions_api.time">Get_current_quiz_submission_times.</a></td>
+        </tr>
+        <tr>
+            <th>Quizzes</th>
+            <td><a href="#method.quizzes/quizzes_api.index">List_quizzes_in_a_course</a>
+                <a href="#method.quizzes/quizzes_api.show">Get_a_single_quiz</a>
+                <a href="#method.quizzes/quizzes_api.create">Create_a_quiz</a>
+                <a href="#method.quizzes/quizzes_api.update">Edit_a_quiz</a>
+                <a href="#method.quizzes/quizzes_api.destroy">Delete_a_quiz</a>
+                <a href="#method.quizzes/quizzes_api.reorder">Reorder_quiz_items</a>
+                <a href="#method.quizzes/quizzes_api.validate_access_code">Validate_quiz_access_code</a></td>
+        </tr>
+        <tr>
+            <th>Result</th>
+            <td><a href="#method.lti/ims/results.index">Show_a_collection_of_Results</a>
+                <a href="#method.lti/ims/results.show">Show_a_Result</a></td>
+        </tr>
+        <tr>
+            <th>Roles</th>
+            <td><a href="#method.role_overrides.api_index">List_roles</a>
+                <a href="#method.role_overrides.show">Get_a_single_role</a>
+                <a href="#method.role_overrides.add_role">Create_a_new_role</a>
+                <a href="#method.role_overrides.remove_role">Deactivate_a_role</a>
+                <a href="#method.role_overrides.activate_role">Activate_a_role</a>
+                <a href="#method.role_overrides.update">Update_a_role</a></td>
+        </tr>
+        <tr>
+            <th>Rubrics</th>
+            <td><a href="#method.rubrics.create">Create_a_single_rubric</a>
+                <a href="#method.rubrics.update">Update_a_single_rubric</a>
+                <a href="#method.rubrics.destroy">Delete_a_single_rubric</a>
+                <a href="#method.rubrics_api.index">List_rubrics</a>
+                <a href="#method.rubrics_api.show">Get_a_single_rubric</a></td>
+        </tr>
+        <tr>
+            <th>RubricAssessments</th>
+            <td><a href="#method.rubric_assessments.create">Create_a_single_rubric_assessment</a>
+                <a href="#method.rubric_assessments.update">Update_a_single_rubric_assessment</a>
+                <a href="#method.rubric_assessments.destroy">Delete_a_single_rubric_assessment</a></td>
+        </tr>
+        <tr>
+            <th>RubricAssociations</th>
+            <td><a href="#method.rubric_associations.create">Create_a_RubricAssociation</a>
+                <a href="#method.rubric_associations.update">Update_a_RubricAssociation</a>
+                <a href="#method.rubric_associations.destroy">Delete_a_RubricAssociation</a></td>
+        </tr>
+        <tr>
+            <th>SIS_Import_Errors</th>
+            <td><a href="#method.sis_import_errors_api.index">Get_SIS_import_error_list</a></td>
+        </tr>
+        <tr>
+            <th>SIS_Imports</th>
+            <td><a href="#method.sis_imports_api.index">Get_SIS_import_list</a>
+                <a href="#method.sis_imports_api.importing">Get_the_current_importing_SIS_import</a>
+                <a href="#method.sis_imports_api.create">Import_SIS_data</a>
+                <a href="#method.sis_imports_api.show">Get_SIS_import_status</a>
+                <a href="#method.sis_imports_api.restore_states">Restore_workflow_states_of_SIS_imported_items</a>
+                <a href="#method.sis_imports_api.abort">Abort_SIS_import</a>
+                <a href="#method.sis_imports_api.abort_all_pending">Abort_all_pending_SIS_imports</a></td>
+        </tr>
+        <tr>
+            <th>SIS_Integration</th>
+            <td><a href="#method.sis_api.sis_assignments">Retrieve_assignments_enabled_for_grade_export_to_SIS</a>
+                <a
+                    href="#method.disable_post_to_sis_api.disable_post_to_sis">Disable_assignments_currently_enabled_for_grade_export_to_SIS</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Score</th>
+            <td><a href="#method.lti/ims/scores.create">Create_a_Score</a></td>
+        </tr>
+        <tr>
+            <th>Search</th>
+            <td><a href="#method.search.recipients">Find_recipients</a>
+                <a href="#method.search.all_courses">List_all_courses</a></td>
+        </tr>
+        <tr>
+            <th>Sections</th>
+            <td><a href="#method.sections.index">List_course_sections</a>
+                <a href="#method.sections.create">Create_course_section</a>
+                <a href="#method.sections.crosslist">Cross-list_a_Section</a>
+                <a href="#method.sections.uncrosslist">De-cross-list_a_Section</a>
+                <a href="#method.sections.update">Edit_a_section</a>
+                <a href="#method.sections.show">Get_section_information</a>
+                <a href="#method.sections.destroy">Delete_a_section</a></td>
+        </tr>
+        <tr>
+            <th>Services</th>
+            <td><a href="#method.services_api.show_kaltura_config">Get_Kaltura_config</a>
+                <a href="#method.services_api.start_kaltura_session">Start_Kaltura_session</a></td>
+        </tr>
+        <tr>
+            <th>Shared_Brand_Configs</th>
+            <td><a href="#method.shared_brand_configs.create">Share_a_BrandConfig_(Theme)</a>
+                <a href="#method.shared_brand_configs.update">Update_a_shared_theme</a>
+                <a href="#method.shared_brand_configs.destroy">Un-share_a_BrandConfig_(Theme)</a></td>
+        </tr>
+        <tr>
+            <th>Submission_Comments</th>
+            <td><a href="#method.submission_comments_api.create_file">Upload_a_file</a></td>
+        </tr>
+        <tr>
+            <th>Submissions</th>
+            <td><a href="#method.submissions.create">Submit_an_assignment</a>
+                <a href="#method.submissions_api.index">List_assignment_submissions</a>
+                <a href="#method.submissions_api.for_students">List_submissions_for_multiple_assignments</a>
+                <a href="#method.submissions_api.show">Get_a_single_submission</a>
+                <a href="#method.submissions_api.create_file">Upload_a_file</a>
+                <a href="#method.submissions_api.update">Grade_or_comment_on_a_submission</a>
+                <a href="#method.submissions_api.gradeable_students">List_gradeable_students</a>
+                <a
+                    href="#method.submissions_api.multiple_gradeable_students">List_multiple_assignments_gradeable_students</a>
+                <a href="#method.submissions_api.bulk_update">Grade_or_comment_on_multiple_submissions</a>
+                <a href="#method.submissions_api.mark_submission_read">Mark_submission_as_read</a>
+                <a href="#method.submissions_api.mark_submission_unread">Mark_submission_as_unread</a>
+                <a href="#method.submissions_api.submission_summary">Submission_Summary</a></td>
+        </tr>
+        <tr>
+            <th>Tabs</th>
+            <td><a href="#method.tabs.index">List_available_tabs_for_a_course_or_group</a>
+                <a href="#method.tabs.update">Update_a_tab_for_a_course</a></td>
+        </tr>
+        <tr>
+            <th>User_Observees</th>
+            <td><a href="#method.user_observees.index">List_observees</a>
+                <a href="#method.user_observees.create">Add_an_observee_with_credentials</a>
+                <a href="#method.user_observees.show">Show_an_observee</a>
+                <a href="#method.user_observees.update">Add_an_observee</a>
+                <a href="#method.user_observees.destroy">Remove_an_observee</a></td>
+        </tr>
+        <tr>
+            <th>Users</th>
+            <td><a href="#method.users.index">List_users_in_account</a>
+                <a href="#method.users.activity_stream">List_the_activity_stream</a>
+                <a href="#method.users.activity_stream_summary">Activity_stream_summary</a>
+                <a href="#method.users.todo_items">List_the_TODO_items</a>
+                <a href="#method.users.todo_item_count">List_counts_for_todo_items</a>
+                <a href="#method.users.upcoming_events">List_upcoming_assignments,_calendar_events</a>
+                <a href="#method.users.missing_submissions">List_Missing_Submissions</a>
+                <a href="#method.users.ignore_stream_item">Hide_a_stream_item</a>
+                <a href="#method.users.ignore_all_stream_items">Hide_all_stream_items</a>
+                <a href="#method.users.create_file">Upload_a_file</a>
+                <a href="#method.users.api_show">Show_user_details</a>
+                <a href="#method.users.create">Create_a_user</a>
+                <a href="#method.users.create_self_registered_user">Self_register_a_user</a>
+                <a href="#method.users.settings">Update_user_settings.</a>
+                <a href="#method.users.get_custom_colors">Get_custom_colors</a>
+                <a href="#method.users.get_custom_color">Get_custom_color</a>
+                <a href="#method.users.set_custom_color">Update_custom_color</a>
+                <a href="#method.users.get_dashboard_positions">Get_dashboard_positions</a>
+                <a href="#method.users.set_dashboard_positions">Update_dashboard_positions</a>
+                <a href="#method.users.update">Edit_a_user</a>
+                <a href="#method.users.merge_into">Merge_user_into_another_user</a>
+                <a href="#method.users.split">Split_merged_users_into_separate_users</a>
+                <a href="#method.users.pandata_events_token">Get_a_Pandata_Events_jwt_token_and_its_expiration_date</a>
+                <a href="#method.users.user_graded_submissions">Get_a_users_most_recently_graded_submissions</a>
+                <a href="#method.profile.settings">Get_user_profile</a>
+                <a href="#method.profile.profile_pics">List_avatar_options</a>
+                <a href="#method.page_views.index">List_user_page_views</a></td>
+        </tr>
+        <tr>
+            <th>Custom_Data</th>
+            <td><a href="#method.custom_data.set_data">Store_custom_data</a>
+                <a href="#method.custom_data.get_data">Load_custom_data</a>
+                <a href="#method.custom_data.delete_data">Delete_custom_data</a></td>
+        </tr>
+        <tr>
+            <th>Course_Nicknames</th>
+            <td><a href="#method.course_nicknames.index">List_course_nicknames</a>
+                <a href="#method.course_nicknames.show">Get_course_nickname</a>
+                <a href="#method.course_nicknames.update">Set_course_nickname</a>
+                <a href="#method.course_nicknames.delete">Remove_course_nickname</a>
+                <a href="#method.course_nicknames.clear">Clear_course_nicknames</a></td>
+        </tr>
+        <tr>
+            <th>Webhooks_Subscriptions</th>
+            <td><a href="#method.lti/subscriptions_api.create">Create_a_Webhook_Subscription</a>
+                <a href="#method.lti/subscriptions_api.destroy">Delete_a_Webhook_Subscription</a>
+                <a href="#method.lti/subscriptions_api.show">Show_a_single_Webhook_Subscription</a>
+                <a href="#method.lti/subscriptions_api.update">Update_a_Webhook_Subscription</a>
+                <a href="#method.lti/subscriptions_api.index">List_all_Webhook_Subscription_for_a_tool_proxy</a></td>
+        </tr>
+        <tr>
+            <th>ePub_Exports</th>
+            <td><a href="#method.epub_exports.index">List_courses_with_their_latest_ePub_export</a>
+                <a href="#method.epub_exports.create">Create_ePub_Export</a>
+                <a href="#method.epub_exports.show">Show_ePub_export</a></td>
+        </tr>
+    </tbody>
+    </table>
