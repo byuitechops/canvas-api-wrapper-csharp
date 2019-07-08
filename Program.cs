@@ -6,27 +6,21 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Polly;
+using CanvasAPIWrapper;
 
-namespace CanvasAPIWrapper
+namespace APITesting
 {
     class Program
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("(Compiled Successfully)");
-
-            // Stopwatch stopWatch = new Stopwatch();
-            // stopWatch.Start();
-
             var myhttp = new HttpClient();
             Wrapper canvas = new Wrapper(myhttp);
 
+            // keep track of all the tasks
             var myCourses = new List<Task<CoursesObject>>();
 
-            // Course thing1 = await canvas.Get<Course>("courses/80");
-            // var thing2 = canvas.Get<User>("user/80");
-            // var thing3 = canvas.Get<Quiz>("quiz/80");
-
+            // each of these returns tasks
             myCourses.Add(canvas.Courses.Index("80"));
             myCourses.Add(canvas.Courses.Index("1659"));
             myCourses.Add(canvas.Courses.Index("14726"));
@@ -133,19 +127,13 @@ namespace CanvasAPIWrapper
             myCourses.Add(canvas.Courses.Index("42772"));
             myCourses.Add(canvas.Courses.Index("43614"));
 
+            // wait until everything finishes before doing the next code
             CoursesObject[] results = await Task.WhenAll(myCourses.ToArray());
 
             Console.WriteLine("");
-
-            // Console.WriteLine(thing1);
-
+            
             // this shows that things come back in the correct (expected) order
-            // Array.ForEach(results, x => Console.WriteLine(x.ToString()));
-
-            // stopWatch.Stop();
-            // TimeSpan ts = stopWatch.Elapsed;
-            // Console.WriteLine("--");
-            // Console.WriteLine("RunTime " + String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds));
+            Array.ForEach(results, x => Console.WriteLine(x.ToString()));
         }
     }
 }
