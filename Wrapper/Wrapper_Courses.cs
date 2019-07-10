@@ -14,9 +14,9 @@ namespace CanvasAPIWrapper
                 parent = w;
             }
 
-            public async Task<CoursesObject> Index(string id)
+            public async Task<CoursesObject> Show(string id)
             {
-                string json = await parent.http.getJsonAsync("courses/" + id);
+                string json = await parent.http.Get("courses/" + id);
                 return JsonConvert.DeserializeObject<CoursesObject>(json);
             }
         }
