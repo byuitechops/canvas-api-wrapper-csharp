@@ -10,14 +10,14 @@ namespace CanvasAPIWrapper
 {
     partial class Wrapper
     {
-        public HTMLHandler html;
+        public HTTPHandler http;
 
         // add new internal classes here
         public InternalCourses Courses;
 
         public Wrapper(HttpClient c)
         {
-            html = new HTMLHandler(c);
+            http = new HTTPHandler(c);
 
             // internal classes for the Canvas.Course.Get() syntax            
             Courses = new InternalCourses(this);

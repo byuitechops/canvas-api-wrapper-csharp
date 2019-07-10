@@ -131,9 +131,11 @@ namespace APITesting
             CoursesObject[] results = await Task.WhenAll(myCourses.ToArray());
 
             Console.WriteLine("");
+
+            canvas.http.stopTimer();
             
             // this shows that things come back in the correct (expected) order
-            Array.ForEach(results, x => Console.WriteLine(x.ToString()));
+            // Array.ForEach(results, x => Console.WriteLine(x.ToString()));
         }
     }
 }

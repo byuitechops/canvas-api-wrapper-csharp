@@ -5,10 +5,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace CanvasAPIWrapper
 {
-    partial class HTMLHandler
+    partial class HTTPHandler
     {
         public HttpClient client;
         public int chill;
@@ -19,14 +20,19 @@ namespace CanvasAPIWrapper
         private string api_prefix;
         private string api_context;
 
-        public HTMLHandler(HttpClient c)
+        private Stopwatch stopwatch;
+
+        public HTTPHandler(HttpClient c)
         {
             client = c;
             // Polly -> Retry
+            runners = 45; // Polly -> Bulkhead Isolation
             chill = 0; // Polly -> Circuit Breaker
-            runners = 14; // Polly -> Bulkhead Isolation
-            buffer_limit = 300.0F;
-            chill_time = 100;
+            chill_time = 70;
+            buffer_limit = 0.0F;
+
+            stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             string token = Environment.GetEnvironmentVariable("CANVAS_API_TOKEN");
             if (token == null) { throw new System.ArgumentException("Canvas api token was not set"); }
@@ -35,6 +41,13 @@ namespace CanvasAPIWrapper
             domain = "https://byui.instructure.com";
             api_prefix = "/api/v1/";
             api_context = domain + api_prefix;
+        }
+
+        public void stopTimer()
+        {
+            stopwatch.Stop();
+            TimeSpan ts = stopwatch.Elapsed;
+            Console.WriteLine(ts);
         }
 
         public async Task<string> getJsonAsync(string path)
@@ -57,17 +70,22 @@ namespace CanvasAPIWrapper
                 Console.WriteLine(":=:chill: " + chill);
                 System.Threading.Thread.Sleep(chill_time);
                 chill -= 1;
-                if (chill < 0) chill = 1;
+                if (chill < 0) chill = 0;
             }
 
             // make the actual api call and wait for it
             // luckily this is threaded so other stuff can happen at the same time
             var response = await client.GetAsync(api_context + path);
             
+            // done running so free up a spot for other threads
+            runners += 1;
+            
             // parse some response
             var limit = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
             var cost = response.Headers.GetValues("X-Request-Cost").FirstOrDefault();
-            Console.WriteLine($"Path: {path.PadLeft(13)} | Limit: {float.Parse(limit)}");
+
+            TimeSpan ts = stopwatch.Elapsed;
+            Console.WriteLine($"Path: {path.PadLeft(13)} | Limit: {limit.Substring(0,5)} | C: {cost.Substring(0,7)}");
             
             // check if it's getting hot in here
             if (float.Parse(limit) < buffer_limit) 
@@ -76,10 +94,8 @@ namespace CanvasAPIWrapper
                 chill += 1;
             }
 
-            // done running so free up a spot for other threads
-            runners += 1;
-            
             var results = await response.Content.ReadAsStringAsync();
+
             return results;
         }
         public async Task<T> Get<T>(string api_call)
