@@ -54,17 +54,19 @@ namespace APITesting
             // Array.ForEach(results, x => Console.Write((x.Count() % 10000).ToString().PadLeft(4) + " | "));
 
             timer.Stop();
-            return timer.Elapsed + " - " + "/" + myCourses.Count;
+            return timer.Elapsed + " - " + canvas.http.retryCount + "/" + myCourses.Count;
         }
 
         static async Task Main(string[] args)
         {
             List<string> results = new List<string>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 results.Add(await test());
             }
             
+            Console.WriteLine("");
+
             foreach (var item in results)
             {
                 Console.WriteLine(item);

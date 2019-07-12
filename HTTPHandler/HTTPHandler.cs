@@ -24,9 +24,11 @@ namespace CanvasAPIWrapper
         private float BigCost;
         public bool ShowRetries;
         public int APIRetryLimit;
+        public int retryCount;
 
         public HTTPHandler(HttpClient c)
         {
+            retryCount = 0;
             ShowRetries = false;
             Client = c;
 
@@ -91,13 +93,20 @@ namespace CanvasAPIWrapper
             // if (old != MaxRunners) Console.Write("." + MaxRunners.ToString()); // :T:
         }
 
+        private async Task<HttpResponseMessage> limitedGetAsync(string url)
+        {
+            while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
+            Runners += 1;
+            var response = await Client.GetAsync(url);
+            Runners -= 1;
+
+            return response;
+        }
+
         private async Task<string> getJsonAsync(string path)
         {
             // limit the number of concurrent api calls
-            while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
-            Runners += 1;
-            var response = await Client.GetAsync(APIContext + path);
-            Runners -= 1;
+            var response = await limitedGetAsync(APIContext + path);
             
             // check if the request was denied because we're over our API limit
             // then try until you succeed
@@ -116,10 +125,10 @@ namespace CanvasAPIWrapper
 
                 System.Threading.Thread.Sleep(retries * 1000);
 
-                while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
-                Runners += 1;
-                response = await Client.GetAsync(APIContext + path);
-                Runners -= 1;
+                Console.Write("*");
+                retryCount += 1;
+
+                response = await limitedGetAsync(APIContext + path);
 
                 status = response.Headers.GetValues("Status").FirstOrDefault();
                 var limit403 = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
@@ -135,6 +144,8 @@ namespace CanvasAPIWrapper
                     Console.Error.WriteLine("Probably an invalid call");
                     Console.Error.WriteLine(response);
 
+                    Console.Write("!");
+
                     return await response.Content.ReadAsStringAsync();
                 }
             }
@@ -145,8 +156,13 @@ namespace CanvasAPIWrapper
                 Console.Error.Write(response.Headers.GetValues("Status").FirstOrDefault());
                 Console.Error.WriteLine(" :at: " + path);
                 Console.Error.WriteLine(response);
+
+                Console.Write("?");
+
                 return await response.Content.ReadAsStringAsync();
             }
+
+            Console.Write(".");
             
             // parse some response
             var limit = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
