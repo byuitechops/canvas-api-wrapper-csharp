@@ -54,7 +54,7 @@ namespace APITesting
             // Array.ForEach(results, x => Console.Write((x.Count() % 10000).ToString().PadLeft(4) + " | "));
 
             timer.Stop();
-            return timer.Elapsed + " - " + canvas.http.ErrorCount + "/" + myCourses.Count;
+            return timer.Elapsed + " - " + "/" + myCourses.Count;
         }
 
         static async Task Main(string[] args)

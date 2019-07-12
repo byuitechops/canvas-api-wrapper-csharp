@@ -24,12 +24,10 @@ namespace CanvasAPIWrapper
         private float BigCost;
         public bool ShowRetries;
         public int APIRetryLimit;
-        public int ErrorCount; // :T:
 
         public HTTPHandler(HttpClient c)
         {
             ShowRetries = false;
-            ErrorCount = 0; // :T:
             Client = c;
 
             // Polly -> Retry (In case of any real errors)
@@ -96,19 +94,9 @@ namespace CanvasAPIWrapper
         private async Task<string> getJsonAsync(string path)
         {
             // limit the number of concurrent api calls
-            // 700 rate-limit, 50 credit-hold, 14 api calls at once reduce rate-limit to 0
-            while (Runners >= MaxRunners)
-            {
-                System.Threading.Thread.Sleep(1); // cpu intensive but it's not doing anything else.
-            }
-
+            while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
             Runners += 1;
-
-            // make the actual api call and wait for it
-            // luckily this is threaded so other stuff can happen at the same time
             var response = await Client.GetAsync(APIContext + path);
-            
-            // done running so free up a spot for other threads
             Runners -= 1;
             
             // check if the request was denied because we're over our API limit
@@ -117,12 +105,8 @@ namespace CanvasAPIWrapper
             var retries = 1;
 
             // keep trying until APIRetryLimit
-            // just 
             while (status == "403 Forbidden")
             {
-                // Console.Error.Write("*"); // :T:
-                ErrorCount += 1; // :T:
-
                 if (ShowRetries)
                 {
                     Console.Error.Write(" | " + response.Headers.GetValues("Status").FirstOrDefault());
