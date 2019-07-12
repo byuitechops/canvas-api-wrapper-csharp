@@ -31,6 +31,7 @@ namespace APITesting
             var myCourses = new List<Task<string>>();
 
             // canvas.http.Show403Retries(true); // show everytime a course is retried
+            canvas.http.debug = true;
 
             // expensive API calls
             for (int i = 1; i <= 268; i++)

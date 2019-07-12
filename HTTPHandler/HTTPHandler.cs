@@ -25,11 +25,13 @@ namespace CanvasAPIWrapper
         public bool ShowRetries;
         public int APIRetryLimit;
         public int retryCount;
+        public bool debug;
 
         public HTTPHandler(HttpClient c)
         {
             retryCount = 0;
             ShowRetries = false;
+            debug = false;
             Client = c;
 
             // Polly -> Retry (In case of any real errors)
@@ -125,7 +127,7 @@ namespace CanvasAPIWrapper
 
                 System.Threading.Thread.Sleep(retries * 1000);
 
-                Console.Write("*");
+                if (debug) { Console.Write("*"); }
                 retryCount += 1;
 
                 response = await limitedGetAsync(APIContext + path);
@@ -144,7 +146,7 @@ namespace CanvasAPIWrapper
                     Console.Error.WriteLine("Probably an invalid call");
                     Console.Error.WriteLine(response);
 
-                    Console.Write("!");
+                    if (debug) { Console.Write("!"); }
 
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -157,12 +159,12 @@ namespace CanvasAPIWrapper
                 Console.Error.WriteLine(" :at: " + path);
                 Console.Error.WriteLine(response);
 
-                Console.Write("?");
+                if (debug) { Console.Write("?"); }
 
                 return await response.Content.ReadAsStringAsync();
             }
 
-            Console.Write(".");
+            if (debug) { Console.Write("."); }
             
             // parse some response
             var limit = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
