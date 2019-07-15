@@ -259,26 +259,4 @@ namespace CanvasAPIWrapper
         [JsonProperty("sis_term_id")]
         public string SisTermId { get; set; }
     }
-
-    public partial class CoursesObject
-    {
-        public static CoursesObject FromJson(string json) => JsonConvert.DeserializeObject<CoursesObject>(json, CanvasAPIWrapper.Converter.Settings);
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(this CoursesObject self) => JsonConvert.SerializeObject(self, CanvasAPIWrapper.Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters = {
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
 }

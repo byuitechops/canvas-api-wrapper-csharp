@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Polly;
+using System.Text;
 
 namespace CanvasAPIWrapper
 {
@@ -95,20 +96,27 @@ namespace CanvasAPIWrapper
             // if (old != MaxRunners) Console.Write("." + MaxRunners.ToString()); // :T:
         }
 
-        private async Task<HttpResponseMessage> limitedGetAsync(string url)
+        private async Task<HttpResponseMessage> LimitedCallAsync(string type, string url, string SerializedCanvasObject)
         {
             while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
             Runners += 1;
-            var response = await Client.GetAsync(url);
-            Runners -= 1;
 
+            var stringContent = new StringContent(SerializedCanvasObject, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = null;
+            
+            if (type.ToLower() == "delete") response = await Client.DeleteAsync(url);
+            else if (type.ToLower() == "get") response = await Client.GetAsync(url);
+            else if (type.ToLower() == "post") response = await Client.PostAsync(url, stringContent);
+            else if (type.ToLower() == "put") response = await Client.PutAsync(url, stringContent);
+            else throw new ArgumentException("type must be \"delete\" or \"get\" or \"post\" or \"put\"");
+            
+            Runners -= 1;
             return response;
         }
 
-        private async Task<string> getJsonAsync(string path)
+        private async Task<string> ApiCallAsync(string type, string path, string input)
         {
-            // limit the number of concurrent api calls
-            var response = await limitedGetAsync(APIContext + path);
+            var response = await LimitedCallAsync(type, APIContext + path, input);
             
             // check if the request was denied because we're over our API limit
             // then try until you succeed
@@ -130,7 +138,7 @@ namespace CanvasAPIWrapper
                 if (debug) { Console.Write("*"); }
                 retryCount += 1;
 
-                response = await limitedGetAsync(APIContext + path);
+                response = await LimitedCallAsync(type, APIContext + path, input);
 
                 status = response.Headers.GetValues("Status").FirstOrDefault();
                 var limit403 = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
@@ -177,13 +185,46 @@ namespace CanvasAPIWrapper
         }
         public async Task<T> Get<T>(string api_call)
         {
-            string json = await getJsonAsync(api_call);
+            string json = await ApiCallAsync("get", api_call, "");
             return JsonConvert.DeserializeObject<T>(json);
         }
 
         public async Task<string> Get(string api_call)
         {
-            return await getJsonAsync(api_call);
+            return await ApiCallAsync("get", api_call, "");
         }
+
+        // public async Task<T> Delete<T>(string api_call)
+        // {
+        //     string json = await ApiCallAsync("delete", api_call, "");
+        //     return JsonConvert.DeserializeObject<T>(json);
+        // }
+
+        // public async Task<string> Delete(string api_call)
+        // {
+        //     return await ApiCallAsync("delete", api_call, "");
+        // }
+
+        // public async Task<T> Post<T>(string api_call, T InputObject)
+        // {
+        //     string json = await ApiCallAsync("post", api_call, JsonConvert.SerializeObject(InputObject));
+        //     return JsonConvert.DeserializeObject<T>(json);
+        // }
+
+        // public async Task<string> Post(string api_call, object InputObject)
+        // {
+        //     return await ApiCallAsync("post", api_call, JsonConvert.SerializeObject(InputObject));
+        // }
+
+        // public async Task<T> Put<T>(string api_call, T InputObject)
+        // {
+        //     string json = await ApiCallAsync("put", api_call, JsonConvert.SerializeObject(InputObject));
+        //     return JsonConvert.DeserializeObject<T>(json);
+        // }
+
+        // public async Task<string> Put(string api_call, object InputObject)
+        // {
+        //     return await ApiCallAsync("put", api_call, JsonConvert.SerializeObject(InputObject));
+        // }
     }
 }

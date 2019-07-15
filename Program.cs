@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CanvasAPIWrapper;
+using Newtonsoft.Json;
 
 namespace APITesting
 {
@@ -28,35 +29,42 @@ namespace APITesting
 
             var myhttp = new HttpClient();
             Wrapper canvas = new Wrapper(myhttp);
+            var myStrings = new List<Task<string>>();
             var myCourses = new List<Task<CoursesObject>>();
 
             // canvas.http.Show403Retries(true); // show everytime a course is retried
-            // canvas.http.debug = true;
+            canvas.http.debug = true;
 
             // expensive API calls
-            // for (int i = 1; i <= 268; i++)
-            // {
-            //     myCourses.Add(BigAPICall(i.ToString(), canvas));
-            // }
+            for (int i = 1; i <= 268; i++)
+            {
+                myStrings.Add(BigAPICall(i.ToString(), canvas));
+            }
 
-            // // cheap API calls
-            // for (int i = 1; i <= 1245; i++)
-            // {
-            //     myCourses.Add(SmallAPICall(i.ToString(), canvas));
-            // }
+            // cheap API calls
+            for (int i = 1; i <= 1245; i++)
+            {
+                myStrings.Add(SmallAPICall(i.ToString(), canvas));
+            }
 
-            myCourses.Add(canvas.Courses.Show("40654", ""));
-            myCourses.Add(canvas.Courses.Show("40654", "?include[]=syllabus_body"));
-            myCourses.Add(canvas.Courses.Show("40654", "?include[]=total_students&include[]=total_scores&include[]=permissions"));
+            // myCourses.Add(canvas.Courses.Show("40654"));
+            // myCourses.Add(canvas.Courses.Show("40654", "?include[]=syllabus_body"));
+            // myCourses.Add(canvas.Courses.Show("40654", "?include[]=total_students&include[]=total_scores&include[]=permissions"));
 
             // these occur concurrently and out of order, so they break the API limiting system
             // and cause interesting errors
 
-            CoursesObject[] results = await Task.WhenAll(myCourses.ToArray()); // wait for everything to finish
-
             // everything comes back in the expected order
             // Console.WriteLine("");
-            Array.ForEach(results, x => Console.WriteLine(JsonHelper.FormatJson(x.ToJson())));
+            // CoursesObject[] results = await Task.WhenAll(myCourses.ToArray()); // wait for everything to finish
+            // Array.ForEach(results, x => Console.WriteLine(JsonHelper.FormatJson(Newtonsoft.Json.JsonConvert.SerializeObject(x))));
+            
+
+            string[] results = await Task.WhenAll(myStrings.ToArray()); // wait for everything to finish
+            long total = 0;
+            Array.ForEach(results, x => total += x.Length);
+            Console.WriteLine(total / results.Length);
+
 
             timer.Stop();
             return timer.Elapsed + " - " + canvas.http.retryCount + "/" + myCourses.Count;
