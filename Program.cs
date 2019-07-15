@@ -28,10 +28,10 @@ namespace APITesting
 
             var myhttp = new HttpClient();
             Wrapper canvas = new Wrapper(myhttp);
-            var myCourses = new List<Task<string>>();
+            var myCourses = new List<Task<CoursesObject>>();
 
             // canvas.http.Show403Retries(true); // show everytime a course is retried
-            canvas.http.debug = true;
+            // canvas.http.debug = true;
 
             // expensive API calls
             // for (int i = 1; i <= 268; i++)
@@ -45,16 +45,18 @@ namespace APITesting
             //     myCourses.Add(SmallAPICall(i.ToString(), canvas));
             // }
 
-            myCourses.Add()
+            myCourses.Add(canvas.Courses.Show("40654", ""));
+            myCourses.Add(canvas.Courses.Show("40654", "?include[]=syllabus_body"));
+            myCourses.Add(canvas.Courses.Show("40654", "?include[]=total_students&include[]=total_scores&include[]=permissions"));
 
             // these occur concurrently and out of order, so they break the API limiting system
             // and cause interesting errors
 
-            string[] results = await Task.WhenAll(myCourses.ToArray()); // wait for everything to finish
+            CoursesObject[] results = await Task.WhenAll(myCourses.ToArray()); // wait for everything to finish
 
             // everything comes back in the expected order
             // Console.WriteLine("");
-            // Array.ForEach(results, x => Console.Write((x.Count() % 10000).ToString().PadLeft(4) + " | "));
+            Array.ForEach(results, x => Console.WriteLine(JsonHelper.FormatJson(x.ToJson())));
 
             timer.Stop();
             return timer.Elapsed + " - " + canvas.http.retryCount + "/" + myCourses.Count;
@@ -63,7 +65,7 @@ namespace APITesting
         static async Task Main(string[] args)
         {
             List<string> results = new List<string>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 1; i++)
             {
                 results.Add(await test());
             }

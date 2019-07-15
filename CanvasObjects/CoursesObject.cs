@@ -2,7 +2,7 @@
 
 // the canvas Courses object that has room for all the options enabled
 
-namespace QuickType
+namespace CanvasAPIWrapper
 {
     using System;
     using System.Collections.Generic;
@@ -262,12 +262,12 @@ namespace QuickType
 
     public partial class CoursesObject
     {
-        public static CoursesObject FromJson(string json) => JsonConvert.DeserializeObject<CoursesObject>(json, QuickType.Converter.Settings);
+        public static CoursesObject FromJson(string json) => JsonConvert.DeserializeObject<CoursesObject>(json, CanvasAPIWrapper.Converter.Settings);
     }
 
     public static class Serialize
     {
-        public static string ToJson(this CoursesObject self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
+        public static string ToJson(this CoursesObject self) => JsonConvert.SerializeObject(self, CanvasAPIWrapper.Converter.Settings);
     }
 
     internal static class Converter
