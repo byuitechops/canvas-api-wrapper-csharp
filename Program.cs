@@ -34,16 +34,18 @@ namespace APITesting
             canvas.http.debug = true;
 
             // expensive API calls
-            for (int i = 1; i <= 268; i++)
-            {
-                myCourses.Add(BigAPICall(i.ToString(), canvas));
-            }
+            // for (int i = 1; i <= 268; i++)
+            // {
+            //     myCourses.Add(BigAPICall(i.ToString(), canvas));
+            // }
 
-            // cheap API calls
-            for (int i = 1; i <= 1245; i++)
-            {
-                myCourses.Add(SmallAPICall(i.ToString(), canvas));
-            }
+            // // cheap API calls
+            // for (int i = 1; i <= 1245; i++)
+            // {
+            //     myCourses.Add(SmallAPICall(i.ToString(), canvas));
+            // }
+
+            myCourses.Add()
 
             // these occur concurrently and out of order, so they break the API limiting system
             // and cause interesting errors
