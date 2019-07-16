@@ -32,20 +32,31 @@ namespace APITesting
             var myStrings = new List<Task<string>>();
             var myCourses = new List<Task<CoursesObject>>();
 
+            var section8params = new CoursesParametersObject();
+            section8params.include.public_description = true;
+            section8params.include.account = true;
+            section8params.include.concluded = true;
+            section8params.include.observed_users = true;
+            section8params.include.syllabus_body = true;
+            section8params.include.teachers = true;
+            section8params.teacher_limit = 12;
+
+            Console.WriteLine(section8params.GetParameterString());
+
             // canvas.http.Show403Retries(true); // show everytime a course is retried
-            canvas.http.debug = true;
+            // canvas.http.debug = true;
 
-            // expensive API calls
-            for (int i = 1; i <= 268; i++)
-            {
-                myStrings.Add(BigAPICall(i.ToString(), canvas));
-            }
+            // // expensive API calls
+            // for (int i = 1; i <= 268; i++)
+            // {
+            //     myStrings.Add(BigAPICall(i.ToString(), canvas));
+            // }
 
-            // cheap API calls
-            for (int i = 1; i <= 1245; i++)
-            {
-                myStrings.Add(SmallAPICall(i.ToString(), canvas));
-            }
+            // // cheap API calls
+            // for (int i = 1; i <= 1245; i++)
+            // {
+            //     myStrings.Add(SmallAPICall(i.ToString(), canvas));
+            // }
 
             // myCourses.Add(canvas.Courses.Show("40654"));
             // myCourses.Add(canvas.Courses.Show("40654", "?include[]=syllabus_body"));
@@ -60,10 +71,10 @@ namespace APITesting
             // Array.ForEach(results, x => Console.WriteLine(JsonHelper.FormatJson(Newtonsoft.Json.JsonConvert.SerializeObject(x))));
             
 
-            string[] results = await Task.WhenAll(myStrings.ToArray()); // wait for everything to finish
-            long total = 0;
-            Array.ForEach(results, x => total += x.Length);
-            Console.WriteLine(total / results.Length);
+            // string[] results = await Task.WhenAll(myStrings.ToArray()); // wait for everything to finish
+            // long total = 0;
+            // Array.ForEach(results, x => total += x.Length);
+            // Console.WriteLine(total / results.Length);
 
 
             timer.Stop();
