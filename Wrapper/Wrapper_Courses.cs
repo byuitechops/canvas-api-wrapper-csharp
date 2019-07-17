@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -14,23 +15,17 @@ namespace CanvasAPIWrapper
                 parent = w;
             }
 
-            public async Task<CoursesObject> Show(string id)
+            public async Task<CourseObject> Show(string id, string parameters = "")
             {
-                string json = await parent.http.Get("courses/" + id);
-                return JsonConvert.DeserializeObject<CoursesObject>(json);
+                string json = await parent.Http.Get("courses/" + id + parameters);
+                return JsonConvert.DeserializeObject<CourseObject>(json);
             }
 
-            public async Task<CoursesObject> Show(string id, string parameters)
+            public async Task<List<UserObject>> ListUsersInCourse(string id, string parameters = "")
             {
-                string json = await parent.http.Get("courses/" + id + parameters);
-                return JsonConvert.DeserializeObject<CoursesObject>(json);
+                string json = await parent.Http.Get("courses/" + id + "/users" + parameters);
+                return JsonConvert.DeserializeObject<List<UserObject>>(json);
             }
-
-            // public async Task<CoursesObject> Show(string id, string parameters)
-            // {
-            //     string json = await parent.http.Get("courses/" + id + parameters);
-            //     return JsonConvert.DeserializeObject<CoursesObject>(json);
-            // }
         }
     }
 }

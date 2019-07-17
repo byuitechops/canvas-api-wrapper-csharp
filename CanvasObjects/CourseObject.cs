@@ -11,7 +11,7 @@ namespace CanvasAPIWrapper
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public partial class CoursesObject
+    public partial class CourseObject
     {
         [JsonProperty("id")]
         public long? Id { get; set; }
@@ -272,7 +272,7 @@ namespace CanvasAPIWrapper
         public string SisTermId { get; set; }
     }
 
-    public class CoursesParametersObject
+    public class CourseParametersObject
     {
         public class Include
         {
@@ -323,7 +323,7 @@ namespace CanvasAPIWrapper
         public Include include;
         public uint teacher_limit;
 
-        public CoursesParametersObject()
+        public CourseParametersObject()
         {
             include = new Include();
             teacher_limit = 0;

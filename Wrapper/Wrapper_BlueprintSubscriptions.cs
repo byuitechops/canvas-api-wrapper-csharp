@@ -16,7 +16,7 @@ namespace CanvasAPIWrapper
 
             public async Task<InternalBlueprintSubscriptions> SubscriptionsIndex(string id)
             {
-                string json = await parent.http.Get("courses/" + id + "/blueprint_subscriptions");
+                string json = await parent.Http.Get("courses/" + id + "/blueprint_subscriptions");
                 return JsonConvert.DeserializeObject<InternalBlueprintSubscriptions>(json);
             }
         }

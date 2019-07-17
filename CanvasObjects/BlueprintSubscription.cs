@@ -9,7 +9,7 @@ namespace CanvasAPIWrapper
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public partial class BlueprintSubscriptionsObject
+    public partial class BlueprintSubscriptionObject
     {
         [JsonProperty("id")]
         public long? Id { get; set; }
