@@ -12,17 +12,6 @@ Wrapper Canvas = new Wrapper();
 CoursesObject MyCourse = await Canvas.Courses.Show("61116");
 CoursesObject MyCourseWithParameters = await Canvas.Courses.Show("61116", "?include[]=term&include[]=syllabus_body");
 
-var sectionparams = new CoursesParametersObject();
-sectionparams.include.public_description = true;
-sectionparams.include.account = true;
-sectionparams.include.concluded = true;
-sectionparams.include.observed_users = true;
-sectionparams.include.syllabus_body = true;
-sectionparams.include.teachers = true;
-sectionparams.teacher_limit = 12;
-
-CoursesObject MyCourseWithParametersFromObject = await Canvas.Courses.Show("61116", sectionparams.GetParameterString());
-
 Console.WriteLine(MyCourseWithParameters.SyllabusBody);
 ```
 
