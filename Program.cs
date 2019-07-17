@@ -27,8 +27,7 @@ namespace APITesting
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
-            var myhttp = new HttpClient();
-            Wrapper canvas = new Wrapper(myhttp);
+            Wrapper canvas = new Wrapper();
             var myStrings = new List<Task<string>>();
             var myCourses = new List<Task<CoursesObject>>();
 
