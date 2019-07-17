@@ -33,7 +33,7 @@ namespace CanvasAPIWrapper
         public object IntegrationId { get; set; }
 
         [JsonProperty("root_account")]
-        public RootAccount RootAccount { get; set; }
+        public string RootAccount { get; set; }
 
         [JsonProperty("avatar_url")]
         public Uri AvatarUrl { get; set; }
@@ -193,5 +193,4 @@ namespace CanvasAPIWrapper
 
     public enum SisSectionId { Online2019SpringPsych11114 };
 
-    public enum RootAccount { ByuiInstructureCom };
 }

@@ -69,7 +69,7 @@ namespace APITesting
             CourseObject[] results = await Task.WhenAll(myCourses.ToArray()); // wait for everything to finish
             // Array.ForEach(results, x => Console.WriteLine(JsonHelper.FormatJson(Newtonsoft.Json.JsonConvert.SerializeObject(x))));
             
-            var courseUsers = await canvas.Courses.ListUsersInCourse("50728", "?enrollment_type[]=teacher");
+            var courseUsers = await canvas.Courses.ListUsersInCourse("50728");
 
             Console.WriteLine("");
             Array.ForEach(courseUsers.ToArray(), x => Console.WriteLine(JsonHelper.FormatJson(JsonConvert.SerializeObject(x))));
