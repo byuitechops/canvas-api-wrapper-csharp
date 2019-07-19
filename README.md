@@ -31,3 +31,5 @@ string CourseFeatures = await Canvas.Http.Get("/courses/61116/features/enabled")
 - Show : courses/ + id (+ parameters)
 - ListUsersInCourse : courses/ + id + /users (+ parameters)
 - SubscriptionsIndex : courses/ + id + /blueprint_subscriptions
+
+All other GET calls are supported but you have to type the full api call and handle the return type yourself.
