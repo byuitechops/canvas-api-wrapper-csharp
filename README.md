@@ -26,3 +26,8 @@ string CourseFeatures = await Canvas.Http.Get("/courses/61116/features/enabled")
 // then you can parse the json to your own POCO
 // or you can just work with the string
 ```
+
+## Supported API Calls
+- Show : courses/ + id (+ parameters)
+- ListUsersInCourse : courses/ + id + /users (+ parameters)
+- SubscriptionsIndex : courses/ + id + /blueprint_subscriptions
