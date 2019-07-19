@@ -133,13 +133,16 @@ namespace CanvasAPIWrapper
                     Console.Error.WriteLine(" | retrying " + retries);
                 }
 
+                // wait a bit between each call
                 System.Threading.Thread.Sleep(retries * 1000);
 
                 if (debug) { Console.Write("*"); }
                 retryCount += 1;
 
+                // wait for an open space and then make the call
                 response = await LimitedCallAsync(type, APIContext + path, input);
 
+                // check if the call was successful
                 status = response.Headers.GetValues("Status").FirstOrDefault();
                 var limit403 = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
                 RecalculateMaxRunners(BigCost * 4, float.Parse(limit403)); // extra expensive to slow things down
@@ -160,6 +163,7 @@ namespace CanvasAPIWrapper
                 }
             }
 
+            // failed API Call, not just over the rate limit.
             if (response.Headers.GetValues("Status").FirstOrDefault() != "200 OK")
             {
                 Console.Error.WriteLine("");
@@ -174,23 +178,40 @@ namespace CanvasAPIWrapper
 
             if (debug) { Console.Write("."); }
             
-            // parse some response
+            // parse the headers to use in throttling
             var limit = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
             var cost = response.Headers.GetValues("X-Request-Cost").FirstOrDefault();
             RecalculateMaxRunners(float.Parse(cost), float.Parse(limit));
 
             var results = await response.Content.ReadAsStringAsync();
 
+            // check for pagination
+            if(response.Headers.Contains("Link"))
+            {
+                var link = response.Headers.GetValues("Link").FirstOrDefault();
+                var pages = link.Split(';', ',', '"');
+                // index 6 will be either "next" (more to do) or "first" (only 1 page) or "prev" (currently last page)
+                if (pages[6] == "next")
+                {
+                    string newpath = path.Split("?page=")[0];
+                    newpath += "?page=" + (path.Split("?page=").Length == 1 ? "2" : (int.Parse(path.Split("?page=")[1]) + 1).ToString());
+                    results = results.Substring(0, results.Length - 1) + ",";
+                    results += (await ApiCallAsync(type, newpath, input)).Substring(1);
+                }
+            }
+
             return results;
         }
         public async Task<T> Get<T>(string api_call)
         {
+            if (api_call[0] == '/') api_call = api_call.Substring(1);
             string json = await ApiCallAsync("get", api_call, "");
             return JsonConvert.DeserializeObject<T>(json);
         }
 
         public async Task<string> Get(string api_call)
         {
+            if (api_call[0] == '/') api_call = api_call.Substring(1);
             return await ApiCallAsync("get", api_call, "");
         }
 
