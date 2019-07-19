@@ -33,3 +33,5 @@ string CourseFeatures = await Canvas.Http.Get("/courses/61116/features/enabled")
 - SubscriptionsIndex : courses/ + id + /blueprint_subscriptions
 
 All other GET calls are supported but you have to type the full api call and handle the return type yourself.
+
+Supports pagination, but will automatically get all data from all pages. Do not specify a "per_page" parameter. (also currently does not work with any parameters)
