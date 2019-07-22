@@ -136,7 +136,7 @@ namespace CanvasAPIWrapper
                 // wait a bit between each call
                 System.Threading.Thread.Sleep(retries * 1000);
 
-                if (debug) { Console.Write("*"); }
+                if (debug) { Console.Write("*"); } // retry
                 retryCount += 1;
 
                 // wait for an open space and then make the call
@@ -157,7 +157,7 @@ namespace CanvasAPIWrapper
                     Console.Error.WriteLine("Probably an invalid call");
                     Console.Error.WriteLine(response);
 
-                    if (debug) { Console.Write("!"); }
+                    if (debug) { Console.Write("!"); } // too many retries
 
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -171,12 +171,12 @@ namespace CanvasAPIWrapper
                 Console.Error.WriteLine(" :at: " + path);
                 Console.Error.WriteLine(response);
 
-                if (debug) { Console.Write("?"); }
+                if (debug) { Console.Write("?"); } // real failure
 
                 return await response.Content.ReadAsStringAsync();
             }
 
-            if (debug) { Console.Write("."); }
+            if (debug) { Console.Write("."); } // success
             
             // parse the headers to use in throttling
             var limit = response.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault();
@@ -185,8 +185,8 @@ namespace CanvasAPIWrapper
 
             var results = await response.Content.ReadAsStringAsync();
 
-            // check for pagination
-            if(response.Headers.Contains("Link"))
+            // check for pagination (only in get requests)
+            if(type.ToLower() == "get" && response.Headers.Contains("Link"))
             {
                 var link = response.Headers.GetValues("Link").FirstOrDefault();
                 var pages = link.Split(';', ',', '"');

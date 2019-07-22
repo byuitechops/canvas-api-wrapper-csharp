@@ -12,15 +12,29 @@ namespace CanvasAPIWrapper
     {
         public HTTPHandler Http;
 
-        // add new internal classes here
-        public InternalCourses Courses;
-
         public Wrapper()
         {
             Http = new HTTPHandler(new HttpClient());
+            SetupInternal();
+        }
 
-            // internal classes for the Canvas.Course.Get() syntax            
+        public Wrapper(HttpClient client)
+        {
+            Http = new HTTPHandler(client);
+            SetupInternal();
+        }
+
+        // NOTE: add new internal classes here
+        public InternalCourses Courses;
+        public InternalBlueprintSubscriptions BlueprintSubscriptions;
+
+        // internal classes for the Canvas.Course.Get() syntax
+        private void SetupInternal()
+        {
+            // NOTE: instantiate your new internal classes here
             Courses = new InternalCourses(this);
+            BlueprintSubscriptions = new InternalBlueprintSubscriptions(this);
+
         }
     }
 }
