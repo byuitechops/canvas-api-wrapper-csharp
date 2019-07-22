@@ -8,15 +8,15 @@ namespace CanvasAPIWrapper
     {
         public class InternalBlueprintSubscriptions
         {
-            public Wrapper wrapper;
+            private Wrapper Canvas;
             public InternalBlueprintSubscriptions(Wrapper w)
             {
-                wrapper = w;
+                Canvas = w;
             }
 
-            public Task<string> SubscriptionsIndex(string id) 
+            public Task<BlueprintCourseObject> SubscriptionsIndex(string id) 
             { 
-                return wrapper.Http.Get<string>("courses/" + id + "/blueprint_subscriptions"); 
+                return Canvas.Http.Get<BlueprintCourseObject>("courses/" + id + "/blueprint_subscriptions"); 
             }
         }
     }
