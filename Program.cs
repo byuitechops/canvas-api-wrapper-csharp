@@ -14,9 +14,11 @@ namespace APITesting
         {
             Wrapper canvas = new Wrapper();
             
-            // var url1 = "/courses/50960/pages";
-            // Console.WriteLine(url1);
-            // string result1 = await canvas.Http.Get(url1);
+            var url1 = "/courses/50960/pages";
+            Console.WriteLine(url1);
+            Task<string> result1 = canvas.Http.Get(url1);
+            result1.Wait();
+            Console.WriteLine(result1.Result);
 
             var courses = new List<Task<CourseObject>>();
             courses.Add(canvas.Courses.Show("40958"));
