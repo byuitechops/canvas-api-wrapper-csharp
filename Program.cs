@@ -29,11 +29,15 @@ namespace CanvasWrapperRefit
 
             HttpResponseMessage result = await Policy
                 .Handle<HttpRequestException>()
-                .OrResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Forbidden)
-                .RetryAsync(3, onRetry: (exception, retryCount) =>
+                .OrResult<HttpResponseMessage>(r => 
+                {
+                    Console.WriteLine(r.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault());
+                    return r.StatusCode == HttpStatusCode.OK;
+                })
+                .RetryAsync(3, onRetry: (exception, retryCount, context) =>
                 {
                     Console.WriteLine(exception.Result.StatusCode.ToString() + retryCount.ToString());
-                    System.Threading.Thread.Sleep(retryCount * 1000);
+                    // System.Threading.Thread.Sleep(retryCount * 1000);
                 })
                 .ExecuteAsync(async () => 
                 { 
