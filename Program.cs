@@ -1,127 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using Polly;
+using Refit;
+using System.Linq;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CanvasAPIWrapper;
-using Newtonsoft.Json;
+using System.Threading;
+using System.Net;
 
-namespace APITesting
+namespace CanvasWrapperRefit
 {
+    class AuthenticatedHttpClientHandler : HttpClientHandler
+    {
+        private string Token;
+        public AuthenticatedHttpClientHandler(string token)
+        {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+            this.Token = token;
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            // See if the request has an authorize header
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
+            Console.WriteLine("BEFORE THE API CALL HAPPENS");
+
+            HttpResponseMessage result = await Policy
+                .Handle<HttpRequestException>()
+                .OrResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Forbidden)
+                .RetryAsync(3, onRetry: (exception, retryCount) =>
+                {
+                    Console.WriteLine(exception.Result.StatusCode.ToString() + retryCount.ToString());
+                    System.Threading.Thread.Sleep(retryCount * 1000);
+                })
+                .ExecuteAsync(async () => 
+                { 
+                    Console.WriteLine("Hello:");
+                    return await base.SendAsync(request, cancellationToken);
+                });
+
+            Console.WriteLine(result.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault());
+
+            return result;
+        }
+    }
+
+    interface CourseRestService
+    {
+        [Get("/api/v1/courses/{id}")]
+        Task<Course> GetCourseById(string id);
+    }
+
+    interface BlueprintInfoRestService
+    {
+        [Get("/api/v1/courses/{id}")]
+        Task<string> GetCourseById(string id);
+    }
+
+    class Wrapper
+    {
+        private string _token;
+        private HttpClient _client;
+        public CourseRestService Courses;
+        public BlueprintInfoRestService BlueprintInfo;
+        private void SetupRestServices()
+        {
+            Courses = RestService.For<CourseRestService>(_client);
+            BlueprintInfo = RestService.For<BlueprintInfoRestService>(_client);
+        }
+        public Wrapper()
+        {
+
+            _token = Environment.GetEnvironmentVariable("CANVAS_API_TOKEN");
+            var auth = new AuthenticatedHttpClientHandler(_token);
+            _client = new HttpClient(auth) { BaseAddress = new Uri("https://byui.instructure.com/") };
+
+            SetupRestServices();
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Wrapper canvas = new Wrapper();
+            var Canvas = new Wrapper();
 
-            Console.WriteLine("==============================================");
-            Console.WriteLine("================ CONCURRENCY =================");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("");
+            var t = Canvas.Courses.GetCourseById("61116");
+            t.Wait();
+            var CameronsCourse = t.Result;
 
-            Console.WriteLine("testing 30 calls to canvas");
-
-            Console.WriteLine("----------------------------------------------");
-
-            Console.WriteLine("Starting synchronous timer...");
-            Stopwatch synchTimer = new Stopwatch();
-            synchTimer.Start();
-
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-            canvas.Courses.Show("40958").Wait();
-            canvas.Courses.Show("40960").Wait();
-            canvas.Courses.Show("40962").Wait();
-            canvas.Courses.Show("40964").Wait();
-            canvas.Courses.Show("40966").Wait();
-
-            synchTimer.Stop();
-            Console.WriteLine("Time: " + synchTimer.Elapsed);
-
-            Console.WriteLine("----------------------------------------------");
-
-            Console.WriteLine("Starting asynchronous timer...");
-            Stopwatch asynchTimer = new Stopwatch();
-            asynchTimer.Start();
-
-            var courses = new List<Task<CourseObject>>();
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-            courses.Add(canvas.Courses.Show("40958"));
-            courses.Add(canvas.Courses.Show("40960"));
-            courses.Add(canvas.Courses.Show("40962"));
-            courses.Add(canvas.Courses.Show("40964"));
-            courses.Add(canvas.Courses.Show("40966"));
-
-            Task<CourseObject[]> t2 = Task.WhenAll(courses.ToArray());
-            t2.Wait();
-
-            asynchTimer.Stop();
-            Console.WriteLine("Time: " + asynchTimer.Elapsed);
-
-            Console.WriteLine("----------------------------------------------");
-
-            Console.WriteLine("An improvement of " + Math.Floor(synchTimer.Elapsed / asynchTimer.Elapsed * 100).ToString() + "%!");
-
-            Console.WriteLine("");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("================= PAGINATION =================");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("");
-
-            var t3 = canvas.Http.Get("courses/50960/pages?sort=title");
-            t3.Wait();
-            int count = t3.Result.Split(",").Length;
-
-            Console.WriteLine("API Call: courses/50960/pages?sort=title");
-            Console.WriteLine("Number of pages retrieved: " + count.ToString());
-
+            Console.WriteLine(CameronsCourse.Id);
         }
     }
 }
