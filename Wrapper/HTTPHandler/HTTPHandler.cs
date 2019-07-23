@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Polly;
 using System.Text;
+using System.Web;
 
 namespace CanvasAPIWrapper
 {
@@ -197,12 +198,22 @@ namespace CanvasAPIWrapper
                 var link = response.Headers.GetValues("Link").FirstOrDefault();
                 var pages = link.Split(';', ',', '"');
                 // index 6 will be either "next" (more to do) or "first" (only 1 page) or "prev" (currently last page)
+                // on the last page we just return
                 if (pages[6] == "next")
                 {
-                    string newpath = path.Split("?page=")[0];
-                    newpath += "?page=" + (path.Split("?page=").Length == 1 ? "2" : (int.Parse(path.Split("?page=")[1]) + 1).ToString());
+                    Uri oldPath = new Uri(APIContext + path);
+                    var qs = HttpUtility.ParseQueryString(oldPath.Query);
+
+                    // increment the page without destroying the URI
+                    if (qs.AllKeys.Contains("page")) qs.Set("page", (int.Parse(qs.Get("page")) + 1).ToString());
+                    else qs.Set("page", "2");
+
+                    string nextPath = string.Join("", oldPath.Segments.Skip(3).ToArray()) + "?" + qs.ToString();
+
+                    // append the results of the next api call recursively
+                    // TODO: find a better way to parse this JSON together
                     results = results.Substring(0, results.Length - 1) + ",";
-                    results += (await ApiCallAsync(type, newpath, input)).Substring(1);
+                    results += (await ApiCallAsync(type, nextPath, input)).Substring(1); // ooh recursion
                 }
             }
 
