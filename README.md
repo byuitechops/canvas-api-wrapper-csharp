@@ -1,5 +1,6 @@
 # Canvas API Wrapper in C#
 A wrapper function for HTTP calls in Canvas that provides these key features:
+- ***Adaptive Semaphore***: This uses a counting semaphore that has the max number of concurrent calls set adaptively while the program is running.
 - ***Rate Limiting***: Canvas limits the number of concurrent API calls that a single user can make. This checks to see if you went over your rate limit then waits, slows down the rate of API calls, and retries the API call that exceeded the rate limit.
 - ***Automatic Pagination Handling***: If there are multiple pages in a GET API call then this will get all of the pages. You don't have to add any pagination parameters, it will get everything for you! (currently doesn't work with any parameters)
 - ***Limited Retries***: If an individual api call returns 403 forbidden more than 10 times (customizable via Wrapper.Http.APIRetryLimit) then the call will fail. If that happens you likely have too many api calls happening all at once and should add an "await" or two between some calls (this probably won't happen)

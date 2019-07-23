@@ -54,8 +54,10 @@ namespace CanvasAPIWrapper
             Costs = new List<float>();
             Costs.Add(BigCost);
             
+            // THIS IS THE SEMAPHORE 
+            // check out https://www.geeksforgeeks.org/semaphores-operating-system/
             MaxRunners = 5; // start off small
-            Runners = 0;
+            Runners = 0; 
 
             APIRetryLimit = 10;
 
@@ -77,6 +79,8 @@ namespace CanvasAPIWrapper
         }
 
         // determine how many concurrent API calls we can make, based on the 15-unit-holding-fee that Canvas has.
+        // this is the variable concurrency limit, or "adaptive concurrenccy limit"
+        // check out https://medium.com/@NetflixTechBlog/performance-under-load-3e6fa9a60581
         private void RecalculateMaxRunners(float cost, float limit)
         {
             // var old = MaxRunners; // :T:
@@ -96,6 +100,8 @@ namespace CanvasAPIWrapper
             // if (old != MaxRunners) Console.Write("." + MaxRunners.ToString()); // :T:
         }
 
+        // this is where the SEMAPHORE locking mechanism is implemented
+        // a counting semaphore, where an adaptive number of concurrent api calls are allowed
         private async Task<HttpResponseMessage> LimitedCallAsync(string type, string url, string SerializedCanvasObject)
         {
             while (Runners >= MaxRunners) { System.Threading.Thread.Sleep(1); }
