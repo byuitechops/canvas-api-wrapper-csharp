@@ -8,32 +8,36 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
+using Polly.Wrap;
 
 namespace CanvasWrapperRefit
 {
     class AuthenticatedHttpClientHandler : HttpClientHandler
     {
-        private string Token;
+        private string _token;
         public AuthenticatedHttpClientHandler(string token)
         {
             if (token == null) throw new ArgumentNullException(nameof(token));
-            this.Token = token;
+            this._token = token;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            // See if the request has an authorize header
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            Console.WriteLine("Setup the bearer header");
 
-            Console.WriteLine("BEFORE THE API CALL HAPPENS");
+            // See if the request has an authorize header
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
+            Console.WriteLine("Initialize the api call");
 
             HttpResponseMessage result = await Policy
                 .Handle<HttpRequestException>()
                 .OrResult<HttpResponseMessage>(r => 
                 {
                     Console.WriteLine(r.Headers.GetValues("X-Rate-Limit-Remaining").FirstOrDefault());
-                    return r.StatusCode == HttpStatusCode.OK;
+                    return r.StatusCode == HttpStatusCode.Forbidden;
                 })
+                // .BulkheadAsync(10, 500)
                 .RetryAsync(3, onRetry: (exception, retryCount, context) =>
                 {
                     Console.WriteLine(exception.Result.StatusCode.ToString() + retryCount.ToString());
@@ -41,7 +45,6 @@ namespace CanvasWrapperRefit
                 })
                 .ExecuteAsync(async () => 
                 { 
-                    Console.WriteLine("Hello:");
                     return await base.SendAsync(request, cancellationToken);
                 });
 
@@ -76,7 +79,6 @@ namespace CanvasWrapperRefit
         }
         public Wrapper()
         {
-
             _token = Environment.GetEnvironmentVariable("CANVAS_API_TOKEN");
             var auth = new AuthenticatedHttpClientHandler(_token);
             _client = new HttpClient(auth) { BaseAddress = new Uri("https://byui.instructure.com/") };
