@@ -80,5 +80,5 @@ We are following the canvas api documentation for our naming convention: https:/
     - https://github.com/App-vNext/Polly/wiki/Bulkhead
         - make sure to use async!
         - expects threads
-
-
+- Redo branch created
+    - Project moved to private server
